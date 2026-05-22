@@ -107,22 +107,26 @@ npm run dev
 
 ---
 
-## Configuration highlights
+## Configuration (Development vs Production)
+
+| Environment | API command | Config files |
+|-------------|-------------|--------------|
+| **Development** (local) | `dotnet run` | `appsettings.json` + `appsettings.Development.json` |
+| **Production** (VPS) | `ASPNETCORE_ENVIRONMENT=Production` + published build | `appsettings.json` + `appsettings.Production.json` + **secrets via env** |
+
+**Full step-by-step guide:** [docs/environments.md](docs/environments.md) — migrations, CORS, JWT, client build, and VPS checklist.
 
 | File | Purpose |
 |------|---------|
-| `server/HappierFarm.WebAPI/appsettings.json` | SQL, JWT, CORS, `GameTiming`, `ClientPresentation` |
-| `server/.../appsettings.Development.json` | Dev logging; same production timers as base config |
-| `server/.../appsettings.Production.json` | `ApplyMigrationsOnStartup: false` template for VPS |
-| `client/.env` | `VITE_DEV_PORT`, `VITE_API_ORIGIN` |
+| `appsettings.json` | Shared defaults (local SQL, game timing, dev JWT placeholder) |
+| `appsettings.Development.json` | Auto-migrate, localhost CORS, Swagger-friendly logging |
+| `appsettings.Production.json` | Production template (SQL/CORS/JWT placeholders, no auto-migrate) |
+| `appsettings.Production.example.json` | Commented example for your server |
+| `client/.env` | Dev only: `VITE_DEV_PORT`, `VITE_API_ORIGIN` |
 
-**JWT** — set `Jwt:SigningKey` to at least 32 UTF-8 bytes; never commit production secrets.
+**JWT** — production must use a new random `Jwt:SigningKey` (≥ 32 bytes) via environment variables; never commit real production secrets.
 
-**Beta badge** — `ClientPresentation:ShowBetaBadge` (labels EN/AR). Set `false` to hide without a client rebuild.
-
-**Pacing** — `GlobalTimePercent` in `GameSettings` (100 = normal). Overrides per crop/animal/factory in `CatalogTimingOverrides`.
-
-Full detail: [docs/context.md](docs/context.md).
+Full game/economy detail: [docs/context.md](docs/context.md).
 
 ---
 
@@ -139,12 +143,15 @@ Full detail: [docs/context.md](docs/context.md).
 
 ## Production deployment (summary)
 
-1. Publish the WebAPI (`dotnet publish`)
-2. Apply migrations on production SQL (`dotnet ef database update` or controlled startup flag)
-3. Serve `client/dist/` and reverse-proxy `/api` + `/hubs` (HTTPS + WebSockets for SignalR)
-4. Set connection string, JWT secret, and CORS to your public URL via environment variables or secrets
+See **[docs/environments.md](docs/environments.md)** for the full workflow. Short version:
 
-See [docs/context.md](docs/context.md) §10.
+1. Set `ASPNETCORE_ENVIRONMENT=Production`
+2. Publish the WebAPI (`dotnet publish -c Release`)
+3. Run `dotnet ef database update` against production SQL
+4. Set `ConnectionStrings__DefaultConnection`, `Jwt__SigningKey`, and `Cors__AllowedOrigins__0` on the server
+5. Serve `client/dist/` and reverse-proxy `/api` + `/hubs` (HTTPS + WebSockets)
+
+Architecture: [docs/context.md](docs/context.md) §10.
 
 ---
 

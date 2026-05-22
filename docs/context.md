@@ -314,18 +314,18 @@ npm run dev
 
 ## 9) Configuration (appsettings)
 
+**How to run Development vs Production:** see **[docs/environments.md](environments.md)**.
+
 | Section | Purpose |
 |---------|---------|
 | `ConnectionStrings:DefaultConnection` | SQL Server |
 | `Jwt` | Issuer, audience, signing key (≥ 32 bytes), token lifetime |
 | `Cors:AllowedOrigins` | Browser origins allowed to call API with credentials |
-| `Database:ApplyMigrationsOnStartup` | `true` in dev (default); `false` in Production template — run migrations explicitly on VPS |
-| `GameTiming` | Bootstrap/fallback pacing when seeding empty DB; **must match production** in Development for local verification |
+| `Database:ApplyMigrationsOnStartup` | `true` in Development; `false` in Production — run migrations explicitly on VPS |
+| `GameTiming` | Bootstrap/fallback pacing when seeding empty DB |
 | `ClientPresentation` | `ShowBetaBadge`, `BetaBadgeLabelEn`, `BetaBadgeLabelAr` — sent on every `GET /api/farm` as `clientPresentation` |
 
-**Development = production pacing (current):** `appsettings.Development.json` mirrors production crop/animal/factory seconds at `GlobalTimePercent: 100`. After pulling, run API once so migration `20260522120000_ProductionEconomyBalance` applies SQL overrides.
-
-**Beta badge:** small fixed pill (non-clickable, `pointer-events: none`). Set `ClientPresentation:ShowBetaBadge` to `false` to hide without redeploying client assets.
+Files: `appsettings.json` (base), `appsettings.Development.json`, `appsettings.Production.json`, optional gitignored `appsettings.Production.local.json`.
 
 ## 10) Deployment (VPS + SQL Server)
 

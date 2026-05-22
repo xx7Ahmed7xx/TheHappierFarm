@@ -10,7 +10,7 @@ public sealed class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseSqlServer(
-                "Server=.;Database=HappierFarmX7;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True")
+                "Server=.;Database=HappierFarmX7;Trusted_Connection=True;TrustServerCertificate=True")
             .Options;
 
         return new AppDbContext(options);

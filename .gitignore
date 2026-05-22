@@ -43,3 +43,4 @@ pnpm-debug.log*
 # Temp downloads during asset setup
 client/public/assets/audio/_dl_*
 client/public/assets/audio/_test_*
+client/public/assets/farm/c__Users_*
