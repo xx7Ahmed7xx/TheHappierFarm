@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#74b9ff"/>
+      <stop offset="100%" stop-color="#a29bfe"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#55efc4"/>
+      <stop offset="100%" stop-color="#00b894"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#sky)"/>
+  <ellipse cx="180" cy="90" rx="100" ry="38" fill="#fff" opacity="0.85"/>
+  <ellipse cx="1000" cy="110" rx="130" ry="42" fill="#fff" opacity="0.7"/>
+  <g transform="translate(600 400)">
+    <polygon points="0,-85 240,0 0,85 -240,0" fill="url(#grass)"/>
+    <polygon points="0,85 240,0 240,22 0,107" fill="#00896f"/>
+    <polygon points="0,85 -240,0 -240,22 0,107" fill="#006b52"/>
+    <polygon points="-70,-50 -25,-75 30,-50 0,-25" fill="#e17055"/>
+    <rect x="-100" y="-15" width="50" height="35" fill="#dfe6e9"/>
+    <circle cx="-120" cy="40" r="18" fill="#fdcb6e"/>
+    <circle cx="100" cy="20" r="20" fill="#00cec9"/>
+    <circle cx="150" cy="-10" r="24" fill="#6c5ce7" opacity="0.8"/>
+    <rect x="40" y="25" width="35" height="20" fill="#e84393" transform="rotate(-15)"/>
+  </g>
+</svg>

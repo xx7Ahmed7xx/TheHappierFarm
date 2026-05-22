@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="The Happier Farm">
+  <rect width="32" height="32" rx="6" fill="#4a8f3c"/>
+  <path fill="#5c3d1e" d="M16 6 26 11 16 16 6 11z"/>
+  <path fill="#3e2a14" d="M6 11v3l10 5 10-5v-3L16 16z"/>
+  <path fill="#7cb342" d="M16 9v7M13 11h6"/>
+  <circle cx="13" cy="10" r="2" fill="#aed581"/>
+  <circle cx="19" cy="10" r="2" fill="#aed581"/>
+  <path fill="#fffde7" stroke="#f9a825" stroke-width="0.8" d="M22 7l1 2 2 .3-1.5 1.2.5 2-1.8-1.1-1.8 1.1.5-2-1.5-1.2 2-.3z"/>
+</svg>

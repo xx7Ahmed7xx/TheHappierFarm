@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/assets/brand/happier-farm-logo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/brand/happier-farm-logo.png" />
+    <title>The Happier Farm!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Sans+Arabic:wght@500;600;700&family=Orbitron:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+    <style>
+      html {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        color: #142018;
+        background: #0b1a14;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Boot / loading (after login) -->
+    <div id="page-boot" class="boot-page" hidden aria-busy="false">
+      <div class="boot-bg" role="presentation"></div>
+      <div class="boot-panel">
+        <img
+          class="boot-logo"
+          src="/assets/brand/happier-farm-logo.png"
+          width="200"
+          height="200"
+          alt=""
+        />
+        <p class="boot-game-name" data-i18n="brand.gameName">The Happier Farm!</p>
+        <p id="boot-step-label" class="boot-step">Preparing your homestead…</p>
+        <div class="boot-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div id="boot-progress-bar" class="boot-progress-fill"></div>
+        </div>
+        <span id="boot-progress-pct" class="boot-pct">0%</span>
+      </div>
+    </div>
+
+    <!-- Log in -->
+    <div id="page-login" class="auth-page auth-page--login">
+      <div class="auth-bg" role="presentation"></div>
+      <div class="auth-overlay"></div>
+      <div class="auth-content">
+        <header class="auth-brand-block">
+          <img
+            class="auth-logo-img"
+            src="/assets/brand/happier-farm-logo.png"
+            width="168" 
+            height="168"
+            alt=""
+          />
+          <p class="auth-game-name" data-i18n="brand.gameName">The Happier Farm!</p>
+        </header>
+        <h1 class="auth-title" data-i18n="auth.loginTitle">Back to the meadow</h1>
+        <p class="auth-tagline" data-i18n="auth.loginTagline">Sync your farmer ID and drop into the grid.</p>
+        <div class="auth-card">
+          <label class="field">
+            Email
+            <input id="login-email" type="email" autocomplete="username" placeholder="you@example.com" />
+          </label>
+          <label class="field">
+            Password
+            <input
+              id="login-password"
+              type="password"
+              autocomplete="current-password"
+              minlength="8"
+              placeholder="Your password"
+            />
+          </label>
+          <p id="login-log" class="auth-log muted"></p>
+          <button id="btn-login" type="button" class="primary full">Log in</button>
+          <p class="auth-switch">
+            New here?
+            <button type="button" id="go-register" class="link">Create an account</button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register -->
+    <div id="page-register" class="auth-page auth-page--register" hidden>
+      <div class="auth-bg" role="presentation"></div>
+      <div class="auth-overlay"></div>
+      <div class="auth-content">
+        <header class="auth-brand-block">
+          <img
+            class="auth-logo-img"
+            src="/assets/brand/happier-farm-logo.png"
+            width="168"
+            height="168"
+            alt=""
+          />
+          <p class="auth-game-name" data-i18n="brand.gameName">The Happier Farm!</p>
+        </header>
+        <h1 class="auth-title" data-i18n="auth.registerTitle">Claim your plot</h1>
+        <p class="auth-tagline" data-i18n="auth.registerTagline">Forge a callsign, seed your barn, launch the simulation.</p>
+        <div class="auth-card">
+          <label class="field">
+            Display name
+            <input
+              id="register-display-name"
+              type="text"
+              maxlength="128"
+              minlength="2"
+              autocomplete="nickname"
+              placeholder="e.g. Sunny Meadow"
+              required
+            />
+          </label>
+          <label class="field">
+            Email
+            <input id="register-email" type="email" autocomplete="username" placeholder="you@example.com" />
+          </label>
+          <label class="field">
+            Password
+            <input
+              id="register-password"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              placeholder="8+ chars, 1 digit"
+            />
+          </label>
+          <p id="register-log" class="auth-log muted"></p>
+          <button id="btn-register" type="button" class="primary full">Register &amp; play</button>
+          <p class="auth-switch">
+            Already have an account?
+            <button type="button" id="go-login" class="link">Log in</button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logged-in game -->
+    <div id="app" class="app" hidden>
+      <header class="top">
+        <div class="top-identity">
+          <div class="hud-brand">
+            <img
+              class="hud-logo"
+              src="/assets/brand/happier-farm-logo.png"
+              height="40"
+              alt=""
+            />
+            <div class="hud-brand-text">
+              <p class="hud-game-title" data-i18n="brand.gameName">The Happier Farm!</p>
+              <h1 id="hud-farmer-name">Farmer</h1>
+              <p id="hud-status" class="muted">Loading…</p>
+            </div>
+          </div>
+        </div>
+        <p id="hud-log" class="top-log muted" aria-live="polite"></p>
+        <div class="stats">
+          <div id="site-lang-switcher" class="site-lang-switcher site-lang-switcher--hud"></div>
+          <span class="stat-pill stat-currency stat-gold" title="Gold">
+            <span class="currency-icon currency-icon--gold" aria-hidden="true"></span>
+            <span class="currency-label" data-i18n="hud.gold">Gold</span>
+            <strong id="hud-gold">—</strong>
+          </span>
+          <span class="stat-pill stat-currency stat-dinars" title="Dinars">
+            <span class="currency-icon currency-icon--dinars" aria-hidden="true"></span>
+            <span class="currency-label" data-i18n="hud.dinars">Dinars</span>
+            <strong id="hud-dinars">—</strong>
+          </span>
+          <span class="stat-pill stat-xp">
+            <span class="currency-icon currency-icon--xp" aria-hidden="true"></span>
+            <span class="currency-label" data-i18n="hud.xp">XP</span>
+            <strong id="hud-xp">—</strong>
+          </span>
+          <span class="stat-pill">
+            <span class="currency-label" data-i18n="hud.level">Level</span>
+            <strong id="hud-level">—</strong>
+          </span>
+          <button id="btn-refresh" type="button" class="secondary compact">Sync</button>
+          <button id="btn-logout" type="button" class="secondary compact">Log out</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <aside class="dock" aria-label="Inventory and tools">
+          <section class="dock-card dock-play">
+            <div class="dock-play-grid">
+              <div class="dock-tools">
+                <span class="dock-label">Tools</span>
+                <div class="tool-bar" role="group" aria-label="Farm tools">
+                  <button type="button" id="tool-plant" class="tool-btn active" title="Plant seeds">
+                    <span class="tool-icon">🌱</span>
+                    <span>Plant</span>
+                  </button>
+                  <button type="button" id="tool-harvest" class="tool-btn" title="Harvest ripe crops">
+                    <span class="tool-icon">🧺</span>
+                    <span>Harvest</span>
+                  </button>
+                  <button type="button" id="tool-place" class="tool-btn" title="Place animals and buildings">
+                    <span class="tool-icon">📍</span>
+                    <span>Place</span>
+                  </button>
+                  <button type="button" id="tool-pickup" class="tool-btn" title="Store back to inventory">
+                    <span class="tool-icon">📦</span>
+                    <span>Store</span>
+                  </button>
+                  <button type="button" id="tool-pan" class="tool-btn" title="Pan the farm view">
+                    <span class="tool-icon">🗺️</span>
+                    <span>Move</span>
+                  </button>
+                </div>
+              </div>
+              <div class="dock-hand">
+                <span class="dock-label">In hand</span>
+                <div id="hand-preview" class="hand-preview"></div>
+                <p id="hand-hint" class="hand-hint muted"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="dock-card dock-inventory inventory-strip" aria-label="Barn and inventory">
+            <div class="inventory-head">
+              <span class="dock-label">Barn &amp; inventory</span>
+              <span id="storage-capacity" class="storage-chip muted"></span>
+            </div>
+            <div class="inventory-filters" role="tablist" aria-label="Filter inventory">
+              <button type="button" class="inv-filter active" data-inv-filter="all">All</button>
+              <button type="button" class="inv-filter" data-inv-filter="crops">Crops</button>
+              <button type="button" class="inv-filter" data-inv-filter="animal">Animal</button>
+              <button type="button" class="inv-filter" data-inv-filter="factory">Factory</button>
+              <button type="button" class="inv-filter" data-inv-filter="build">Build</button>
+            </div>
+            <div id="inventory-list" class="inventory-list"></div>
+            <div class="barn-actions">
+              <button type="button" id="btn-collect-animals" class="barn-btn secondary">
+                Collect all ready animals
+              </button>
+              <button type="button" id="btn-collect-factories" class="barn-btn secondary">
+                Collect all ready factories
+              </button>
+              <button type="button" id="btn-upgrade-barn" class="barn-btn primary" hidden>
+                Upgrade barn
+              </button>
+            </div>
+          </section>
+
+        </aside>
+
+        <div class="farm-column">
+          <section class="field-wrap" aria-label="Your farm">
+            <p id="farm-pan-hint" class="farm-pan-hint">
+              Middle-click drag to pan · Move tool · two fingers on touch ·
+              <kbd>+</kbd>/<kbd>−</kbd> zoom
+            </p>
+            <div class="farm-viewport">
+              <div class="zoom-controls" aria-label="Zoom">
+                <button type="button" id="btn-zoom-in" class="zoom-btn" title="Zoom in">+</button>
+                <button type="button" id="btn-zoom-out" class="zoom-btn" title="Zoom out">−</button>
+              </div>
+              <div id="game-container" class="game-shell"></div>
+            </div>
+          </section>
+
+          <section class="shop-strip" aria-label="Market">
+            <div class="shop-strip-head">
+              <div class="shop-tabs" role="tablist">
+                <button type="button" class="shop-tab active" data-shop-tab="seeds" role="tab">Crops</button>
+                <button type="button" class="shop-tab" data-shop-tab="animals" role="tab">Animals</button>
+                <button type="button" class="shop-tab" data-shop-tab="factories" role="tab">Factories</button>
+                <button type="button" class="shop-tab" data-shop-tab="decorations" role="tab">Decor</button>
+                <button type="button" class="shop-tab" data-shop-tab="expansion" role="tab">Expand</button>
+              </div>
+            </div>
+            <div id="shop-cards" class="shop-row"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="farm-modal" class="farm-modal" hidden aria-hidden="true">
+      <div class="farm-modal-backdrop" aria-hidden="true"></div>
+      <div
+        class="farm-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="farm-modal-title"
+      >
+        <header class="farm-modal-header">
+          <span id="farm-modal-emoji" class="farm-modal-emoji" aria-hidden="true">🌾</span>
+          <h2 id="farm-modal-title" class="farm-modal-title">Confirm</h2>
+        </header>
+        <p id="farm-modal-message" class="farm-modal-message"></p>
+        <ul id="farm-modal-details" class="farm-modal-details" hidden></ul>
+        <div id="farm-modal-batch" class="farm-modal-batch" hidden></div>
+        <footer class="farm-modal-actions">
+          <button type="button" id="farm-modal-cancel" class="farm-modal-cancel">Cancel</button>
+          <button type="button" id="farm-modal-confirm" class="farm-modal-confirm">Confirm</button>
+        </footer>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

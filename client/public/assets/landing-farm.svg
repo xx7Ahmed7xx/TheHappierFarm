@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#87ceeb"/>
+      <stop offset="100%" stop-color="#b8e6f5"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7bc96f"/>
+      <stop offset="100%" stop-color="#4a8f3c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#sky)"/>
+  <ellipse cx="200" cy="120" rx="90" ry="40" fill="#fff" opacity="0.85"/>
+  <ellipse cx="950" cy="90" rx="120" ry="45" fill="#fff" opacity="0.75"/>
+  <!-- isometric farm plot -->
+  <g transform="translate(600 380)">
+    <polygon points="0,-80 200,0 0,80 -200,0" fill="url(#grass)"/>
+    <polygon points="0,80 200,0 200,18 0,98" fill="#5a7a32"/>
+    <polygon points="0,80 -200,0 -200,18 0,98" fill="#3d5a24"/>
+    <polygon points="-60,-40 -20,-60 20,-40 0,-20" fill="#c62828"/>
+    <polygon points="-60,-40 0,-20 0,-5 -60,-25" fill="#8e0000"/>
+    <polygon points="40,10 80,-10 80,30 40,50" fill="#ffeb3b" opacity="0.9"/>
+    <rect x="-90" y="-10" width="35" height="25" fill="#fff" transform="skewY(-26)"/>
+    <circle cx="70" cy="25" r="14" fill="#2e7d32"/>
+    <circle cx="100" cy="5" r="18" fill="#388e3c"/>
+  </g>
+</svg>

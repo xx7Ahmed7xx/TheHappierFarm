@@ -1,0 +1,45 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET
+**/bin/
+**/obj/
+**/.vs/
+**/TestResults/
+*.dbmdl
+*.jfm
+appsettings.*.local.json
+**/appsettings.Local.json
+**/secrets.json
+
+# Node / Vite client
+client/node_modules/
+client/dist/
+client/dist-ssr/
+client/.env
+client/.env.local
+client/.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local SQL / backups (do not commit production DB dumps with player data)
+*.bak
+*.mdf
+*.ldf
+
+# Temp downloads during asset setup
+client/public/assets/audio/_dl_*
+client/public/assets/audio/_test_*
