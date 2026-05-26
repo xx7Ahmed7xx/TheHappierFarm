@@ -33,21 +33,31 @@ namespace HappierFarm.Infrastructure.Migrations
                     b.Property<int>("BuyPrice")
                         .HasColumnType("int");
 
-                    b.Property<int>("FootprintHeight")
-                        .HasColumnType("int");
+                    b.Property<string>("DisplayNameAr")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("FootprintWidth")
-                        .HasColumnType("int");
+                    b.Property<string>("DisplayNameEn")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("FeedQuantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("FeedResourceCode")
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<int>("FeedQuantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                    b.Property<int>("FootprintHeight")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FootprintWidth")
+                        .HasColumnType("int");
 
                     b.Property<int>("MaxOwned")
                         .ValueGeneratedOnAdd()
@@ -86,7 +96,9 @@ namespace HappierFarm.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            BuyPrice = 150,
+                            BuyPrice = 250,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FeedQuantity = 2,
                             FeedResourceCode = "wheat",
                             FootprintHeight = 1,
@@ -97,12 +109,14 @@ namespace HappierFarm.Infrastructure.Migrations
                             Name = "Happy Holstein",
                             ProductCode = "milk",
                             ProductQuantity = 2,
-                            ProductionIntervalSeconds = 90
+                            ProductionIntervalSeconds = 2700
                         },
                         new
                         {
                             Id = 2,
-                            BuyPrice = 120,
+                            BuyPrice = 200,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FeedQuantity = 2,
                             FeedResourceCode = "barley",
                             FootprintHeight = 1,
@@ -113,12 +127,14 @@ namespace HappierFarm.Infrastructure.Migrations
                             Name = "Woolly Sheep",
                             ProductCode = "wool",
                             ProductQuantity = 2,
-                            ProductionIntervalSeconds = 120
+                            ProductionIntervalSeconds = 3600
                         },
                         new
                         {
                             Id = 3,
-                            BuyPrice = 80,
+                            BuyPrice = 60,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FeedQuantity = 1,
                             FeedResourceCode = "carrot",
                             FootprintHeight = 1,
@@ -129,8 +145,64 @@ namespace HappierFarm.Infrastructure.Migrations
                             Name = "Clucking Hen",
                             ProductCode = "egg",
                             ProductQuantity = 3,
-                            ProductionIntervalSeconds = 60
+                            ProductionIntervalSeconds = 1200
                         });
+                });
+
+            modelBuilder.Entity("HappierFarm.Domain.Entities.BarnUpgradeTierDefinition", b =>
+                {
+                    b.Property<int>("Tier")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Tier"));
+
+                    b.Property<int>("BonusSlots")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoldCost")
+                        .HasColumnType("int");
+
+                    b.HasKey("Tier");
+
+                    b.ToTable("BarnUpgradeTierDefinitions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Tier = 1,
+                            BonusSlots = 20,
+                            GoldCost = 250
+                        },
+                        new
+                        {
+                            Tier = 2,
+                            BonusSlots = 50,
+                            GoldCost = 600
+                        },
+                        new
+                        {
+                            Tier = 3,
+                            BonusSlots = 100,
+                            GoldCost = 1500
+                        });
+                });
+
+            modelBuilder.Entity("HappierFarm.Domain.Entities.CatalogTimingOverride", b =>
+                {
+                    b.Property<string>("CatalogKind")
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<int>("CatalogId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BaseSeconds")
+                        .HasColumnType("int");
+
+                    b.HasKey("CatalogKind", "CatalogId");
+
+                    b.ToTable("CatalogTimingOverrides", (string)null);
                 });
 
             modelBuilder.Entity("HappierFarm.Domain.Entities.CropDefinition", b =>
@@ -146,6 +218,16 @@ namespace HappierFarm.Infrastructure.Migrations
 
                     b.Property<int>("BuyPrice")
                         .HasColumnType("int");
+
+                    b.Property<string>("DisplayNameAr")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("DisplayNameEn")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("GrowthDurationSeconds")
                         .HasColumnType("int");
@@ -178,60 +260,70 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 1,
                             BaseYield = 1,
-                            BuyPrice = 10,
-                            GrowthDurationSeconds = 60,
+                            BuyPrice = 8,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            GrowthDurationSeconds = 1800,
                             HarvestResourceCode = "barley",
                             MinLevelRequired = 1,
                             Name = "Sunny Barley",
-                            SellValue = 28,
+                            SellValue = 18,
                             XpReward = 5
                         },
                         new
                         {
                             Id = 2,
                             BaseYield = 1,
-                            BuyPrice = 20,
-                            GrowthDurationSeconds = 120,
+                            BuyPrice = 15,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            GrowthDurationSeconds = 2700,
                             HarvestResourceCode = "carrot",
                             MinLevelRequired = 2,
                             Name = "Swift Carrot",
-                            SellValue = 55,
+                            SellValue = 35,
                             XpReward = 12
                         },
                         new
                         {
                             Id = 3,
                             BaseYield = 1,
-                            BuyPrice = 15,
-                            GrowthDurationSeconds = 90,
+                            BuyPrice = 12,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            GrowthDurationSeconds = 2400,
                             HarvestResourceCode = "wheat",
                             MinLevelRequired = 2,
                             Name = "Golden Wheat",
-                            SellValue = 38,
+                            SellValue = 28,
                             XpReward = 8
                         },
                         new
                         {
                             Id = 4,
                             BaseYield = 1,
-                            BuyPrice = 35,
-                            GrowthDurationSeconds = 180,
+                            BuyPrice = 30,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            GrowthDurationSeconds = 7200,
                             HarvestResourceCode = "tomato",
                             MinLevelRequired = 4,
                             Name = "Vine Tomato",
-                            SellValue = 72,
+                            SellValue = 65,
                             XpReward = 18
                         },
                         new
                         {
                             Id = 5,
                             BaseYield = 1,
-                            BuyPrice = 50,
-                            GrowthDurationSeconds = 300,
+                            BuyPrice = 45,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            GrowthDurationSeconds = 14400,
                             HarvestResourceCode = "pumpkin",
                             MinLevelRequired = 6,
                             Name = "Autumn Pumpkin",
-                            SellValue = 120,
+                            SellValue = 110,
                             XpReward = 28
                         });
                 });
@@ -243,6 +335,16 @@ namespace HappierFarm.Infrastructure.Migrations
 
                     b.Property<int>("BuyPrice")
                         .HasColumnType("int");
+
+                    b.Property<string>("DisplayNameAr")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("DisplayNameEn")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("FootprintHeight")
                         .HasColumnType("int");
@@ -273,6 +375,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 1,
                             BuyPrice = 35,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FootprintHeight = 1,
                             FootprintWidth = 1,
                             MaxOwned = 30,
@@ -284,6 +388,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 2,
                             BuyPrice = 60,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FootprintHeight = 1,
                             FootprintWidth = 2,
                             MaxOwned = 20,
@@ -295,6 +401,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 3,
                             BuyPrice = 45,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FootprintHeight = 1,
                             FootprintWidth = 1,
                             MaxOwned = 30,
@@ -314,6 +422,16 @@ namespace HappierFarm.Infrastructure.Migrations
 
                     b.Property<int>("BuyPrice")
                         .HasColumnType("int");
+
+                    b.Property<string>("DisplayNameAr")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("DisplayNameEn")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("FootprintHeight")
                         .HasColumnType("int");
@@ -373,6 +491,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 1,
                             BuyPrice = 220,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FootprintHeight = 2,
                             FootprintWidth = 2,
                             InputQuantity = 3,
@@ -384,13 +504,15 @@ namespace HappierFarm.Infrastructure.Migrations
                             Name = "Meadow Cheese Press",
                             OutputQuantity = 1,
                             OutputResourceCode = "cheese",
-                            ProcessSeconds = 45,
+                            ProcessSeconds = 1800,
                             SellValue = 80
                         },
                         new
                         {
                             Id = 3,
                             BuyPrice = 200,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FootprintHeight = 2,
                             FootprintWidth = 2,
                             InputQuantity = 2,
@@ -402,13 +524,15 @@ namespace HappierFarm.Infrastructure.Migrations
                             Name = "Wool Spinner",
                             OutputQuantity = 1,
                             OutputResourceCode = "yarn",
-                            ProcessSeconds = 60,
+                            ProcessSeconds = 2400,
                             SellValue = 45
                         },
                         new
                         {
                             Id = 4,
                             BuyPrice = 280,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FootprintHeight = 2,
                             FootprintWidth = 2,
                             InputQuantity = 3,
@@ -420,13 +544,15 @@ namespace HappierFarm.Infrastructure.Migrations
                             Name = "Village Bakery",
                             OutputQuantity = 1,
                             OutputResourceCode = "bread",
-                            ProcessSeconds = 75,
+                            ProcessSeconds = 3000,
                             SellValue = 55
                         },
                         new
                         {
                             Id = 2,
                             BuyPrice = 350,
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
                             FootprintHeight = 2,
                             FootprintWidth = 2,
                             InputQuantity = 0,
@@ -517,6 +643,87 @@ namespace HappierFarm.Infrastructure.Migrations
                     b.ToTable("FarmTiles", (string)null);
                 });
 
+            modelBuilder.Entity("HappierFarm.Domain.Entities.GameSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AbsoluteMaxGridSize")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ActiveEventMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ActiveEventName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ActiveEventTimePercent")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BarnFactoryTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BaseStorageCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DefaultGridSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpansionAreaTaxPerStepSq")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpansionBasePrice")
+                        .HasColumnType("int");
+
+                    b.Property<double>("ExpansionGrowthRate")
+                        .HasColumnType("float");
+
+                    b.Property<int>("GlobalTimePercent")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxBankedAnimalCycles")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinGridSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StarterDinars")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StarterGold")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoragePerLevel")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameSettings", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AbsoluteMaxGridSize = 999,
+                            ActiveEventTimePercent = 0,
+                            BarnFactoryTypeId = 2,
+                            BaseStorageCapacity = 50,
+                            DefaultGridSize = 9,
+                            ExpansionAreaTaxPerStepSq = 25,
+                            ExpansionBasePrice = 450,
+                            ExpansionGrowthRate = 2.0800000000000001,
+                            GlobalTimePercent = 100,
+                            MaxBankedAnimalCycles = 30,
+                            MinGridSize = 9,
+                            StarterDinars = 100,
+                            StarterGold = 100,
+                            StoragePerLevel = 10
+                        });
+                });
+
             modelBuilder.Entity("HappierFarm.Domain.Entities.PlayerAnimal", b =>
                 {
                     b.Property<Guid>("Id")
@@ -598,123 +805,6 @@ namespace HappierFarm.Infrastructure.Migrations
                     b.ToTable("PlayerFactories", (string)null);
                 });
 
-            modelBuilder.Entity("HappierFarm.Domain.Entities.ResourceDefinition", b =>
-                {
-                    b.Property<string>("Code")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<bool>("IsEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<int>("SellValue")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("int");
-
-                    b.HasKey("Code");
-
-                    b.ToTable("ResourceDefinitions", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Code = "barley",
-                            Category = "crop",
-                            IsEnabled = true,
-                            SellValue = 28,
-                            SortOrder = 10
-                        },
-                        new
-                        {
-                            Code = "carrot",
-                            Category = "crop",
-                            IsEnabled = true,
-                            SellValue = 55,
-                            SortOrder = 20
-                        },
-                        new
-                        {
-                            Code = "wheat",
-                            Category = "crop",
-                            IsEnabled = true,
-                            SellValue = 38,
-                            SortOrder = 30
-                        },
-                        new
-                        {
-                            Code = "tomato",
-                            Category = "crop",
-                            IsEnabled = true,
-                            SellValue = 72,
-                            SortOrder = 40
-                        },
-                        new
-                        {
-                            Code = "pumpkin",
-                            Category = "crop",
-                            IsEnabled = true,
-                            SellValue = 120,
-                            SortOrder = 50
-                        },
-                        new
-                        {
-                            Code = "milk",
-                            Category = "animal_product",
-                            IsEnabled = true,
-                            SellValue = 12,
-                            SortOrder = 60
-                        },
-                        new
-                        {
-                            Code = "egg",
-                            Category = "animal_product",
-                            IsEnabled = true,
-                            SellValue = 8,
-                            SortOrder = 70
-                        },
-                        new
-                        {
-                            Code = "wool",
-                            Category = "animal_product",
-                            IsEnabled = true,
-                            SellValue = 18,
-                            SortOrder = 80
-                        },
-                        new
-                        {
-                            Code = "cheese",
-                            Category = "factory_product",
-                            IsEnabled = true,
-                            SellValue = 80,
-                            SortOrder = 90
-                        },
-                        new
-                        {
-                            Code = "yarn",
-                            Category = "factory_product",
-                            IsEnabled = true,
-                            SellValue = 45,
-                            SortOrder = 100
-                        },
-                        new
-                        {
-                            Code = "bread",
-                            Category = "factory_product",
-                            IsEnabled = true,
-                            SellValue = 55,
-                            SortOrder = 110
-                        });
-                });
-
             modelBuilder.Entity("HappierFarm.Domain.Entities.PlayerResource", b =>
                 {
                     b.Property<Guid>("Id")
@@ -765,6 +855,155 @@ namespace HappierFarm.Infrastructure.Migrations
                     b.ToTable("PlayerSeedStocks", (string)null);
                 });
 
+            modelBuilder.Entity("HappierFarm.Domain.Entities.ResourceDefinition", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("DisplayNameAr")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("DisplayNameEn")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<bool>("IsEnabled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("SellValue")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("ResourceDefinitions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Code = "barley",
+                            Category = "crop",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 28,
+                            SortOrder = 10
+                        },
+                        new
+                        {
+                            Code = "carrot",
+                            Category = "crop",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 55,
+                            SortOrder = 20
+                        },
+                        new
+                        {
+                            Code = "wheat",
+                            Category = "crop",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 38,
+                            SortOrder = 30
+                        },
+                        new
+                        {
+                            Code = "tomato",
+                            Category = "crop",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 72,
+                            SortOrder = 40
+                        },
+                        new
+                        {
+                            Code = "pumpkin",
+                            Category = "crop",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 120,
+                            SortOrder = 50
+                        },
+                        new
+                        {
+                            Code = "milk",
+                            Category = "animal_product",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 12,
+                            SortOrder = 60
+                        },
+                        new
+                        {
+                            Code = "egg",
+                            Category = "animal_product",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 8,
+                            SortOrder = 70
+                        },
+                        new
+                        {
+                            Code = "wool",
+                            Category = "animal_product",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 18,
+                            SortOrder = 80
+                        },
+                        new
+                        {
+                            Code = "cheese",
+                            Category = "factory_product",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 80,
+                            SortOrder = 90
+                        },
+                        new
+                        {
+                            Code = "yarn",
+                            Category = "factory_product",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 45,
+                            SortOrder = 100
+                        },
+                        new
+                        {
+                            Code = "bread",
+                            Category = "factory_product",
+                            DisplayNameAr = "",
+                            DisplayNameEn = "",
+                            IsEnabled = true,
+                            SellValue = 55,
+                            SortOrder = 110
+                        });
+                });
+
             modelBuilder.Entity("HappierFarm.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -783,6 +1022,9 @@ namespace HappierFarm.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Dinars")
+                        .HasColumnType("int");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
@@ -808,9 +1050,6 @@ namespace HappierFarm.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("GoldCoins")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Dinars")
                         .HasColumnType("int");
 
                     b.Property<int>("Level")

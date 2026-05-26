@@ -103,7 +103,9 @@ Copy the `publish` folder to the VPS.
 
 ### 2. Apply database migrations (once per release)
 
-On the server (or from your PC against production SQL):
+Schema is managed with EF Core — see **[migrations.md](migrations.md)** for add/update commands and rules (always use `dotnet ef migrations add`, never hand-ordered files).
+
+**First deploy after baseline squash:** drop empty `HappierFarmX7` on the VPS if a failed publish left a database without tables, then:
 
 ```powershell
 cd server
@@ -218,10 +220,19 @@ npm run build
 
 ---
 
+## Visual Studio publish + database
+
+**Recommended:** leave **“Update database”** unchecked on the publish profile. Apply schema with [migrations.md](migrations.md) (`dotnet ef database update`) once per release.
+
+If publish runs EF scripts and fails on a fresh VPS database, **drop** `HappierFarmX7` in SSMS and run `dotnet ef database update` with the production connection string, then publish the app only.
+
+---
+
 ## Troubleshooting
 
 | Symptom | Likely fix |
 |---------|------------|
+| Publish: missing table / script failed | Drop empty or partial DB; use `dotnet ef database update` — see [migrations.md](migrations.md) |
 | CORS error in browser | Add exact browser URL to `Cors:AllowedOrigins` |
 | 401 / invalid token after deploy | JWT signing key changed — users must log in again |
 | API starts then DB errors | Check `ConnectionStrings__DefaultConnection` on the server |

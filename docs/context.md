@@ -22,7 +22,7 @@ Older brainstorming files live under `docs/chatgptDocs.md` and `docs/geminiDocs.
 | Runtime | **.NET 8 LTS** | Broad support; modular monolith. |
 | API | **ASP.NET Core** minimal APIs + Swagger in dev | REST for authoritative actions. |
 | DB | **SQL Server** (existing VPS) | EF Core first-class provider; composite indexes on tiles. |
-| ORM | **EF Core 8** | Migrations in `server/HappierFarm.Infrastructure/Migrations`. |
+| ORM | **EF Core 8** | Migrations in `server/HappierFarm.Infrastructure/Migrations` — workflow in `docs/migrations.md`. |
 | Realtime | **SignalR** (JSON) | Push + future chat/presence; **not** the source of truth for economy. |
 | Auth | **ASP.NET Core Identity** + **JWT Bearer** | Email/password register & login; farm + hub require valid JWT. |
 | Client | **Phaser 3** + **TypeScript** + **Vite 8** | Canvas = farm grid; DOM = HUD/shop-style controls. **Procedural** isometric sprites at preload (cow/cheese-press style) — no external sprite pack required. |
@@ -404,6 +404,7 @@ Files: `appsettings.json` (base), `appsettings.Development.json`, `appsettings.P
 | 2026-05-21 | **SQL game config** + `GameConfigService`; animal **feed** API; harvest → `ResourceDefinitions`. |
 | 2026-05-21 | **Production economy** migration; dev appsettings = production pacing (`GlobalTimePercent` 100). |
 | 2026-05-21 | **ClientPresentation** beta badge; full EN/AR catalog names in modals; level gates wired on plant/buy/place. |
+| 2026-05-26 | **Migration baseline:** squashed to single `20260526122202_InitialSchema`; all envs reset DB once; future changes only via `dotnet ef migrations add` — see `docs/migrations.md`. |
 
 ## 14) Maintenance
 
@@ -412,9 +413,7 @@ When we change mechanics, APIs, or schema:
 1. Update **this file** in the same PR.  
 2. Add a row to **§13 Decision log**.  
 3. Update **§5 Economy** tables when changing prices or timers.  
-3. Keep migrations reproducible (`server/HappierFarm.Infrastructure`).  
-4. If the `Migrations` folder is missing or migrations are out of date, from **`server/`** run:  
-   `dotnet ef migrations add <Name> --project HappierFarm.Infrastructure --startup-project HappierFarm.WebAPI` then apply with `dotnet ef database update` (or rely on Development `Migrate()` on startup).
+4. **Database:** follow **`docs/migrations.md`** — always `dotnet ef migrations add <Name>` from `server/`; never hand-reorder migration timestamps; apply with `dotnet ef database update` (Production) or dev auto-migrate on startup.
 
 ---
 
