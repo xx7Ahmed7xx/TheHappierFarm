@@ -47,7 +47,7 @@ h3 {
   inset: 0;
   z-index: 0;
   background-color: #0a1812;
-  background-image: url('/assets/backgrounds/bg-boot.png');
+  background-image: url('/assets/farm/bg-boot.png');
   background-size: cover;
   background-position: center;
 }
@@ -155,11 +155,11 @@ html[dir='rtl'] .hud-game-title {
 }
 
 .auth-page--login .auth-bg {
-  background-image: url('/assets/backgrounds/bg-login.png');
+  background-image: url('/assets/farm/bg-login.png');
 }
 
 .auth-page--register .auth-bg {
-  background-image: url('/assets/backgrounds/bg-register.png');
+  background-image: url('/assets/farm/bg-register.png');
 }
 
 .auth-overlay {
