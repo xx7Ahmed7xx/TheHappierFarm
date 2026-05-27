@@ -447,7 +447,7 @@ function createPhaserGame(): Phaser.Game {
     render: {
       antialias: true,
       pixelArt: false,
-      roundPixels: true,
+      roundPixels: false,
     },
     scale: {
       mode: Phaser.Scale.RESIZE,

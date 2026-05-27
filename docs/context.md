@@ -371,6 +371,7 @@ Files: `appsettings.json` (base), `appsettings.Development.json`, `appsettings.P
 - **Arabic catalog seed** migration `20260527081901_SeedArabicCatalogDisplayNames` fills `DisplayNameEn` / `DisplayNameAr` on all catalog tables.  
 - **Runtime config**: `client/public/config.production.example.json` → copy to `config.json` on server; `runtimeConfig.ts` loads `apiBaseUrl` at startup (no rebuild to change API host).
 - **Square favicons + social previews**: `generate-brand-images.mjs`; OG/Twitter meta in `index.html` for Telegram, WhatsApp, Facebook, X link cards.
+- **Farm camera**: `centerFarmCamera` + `clampFarmCameraScroll` center the grid on tall/wide viewports without locking pan; **Sync** no longer re-centers every poll (only first layout or grid resize). Crop/placement timer labels use `farmTextResolution()` (retina) and 10–14px font; `roundPixels` off for sharper text when zooming.
 
 **v1.5 features (shipped)**  
 - **Multi-tile footprints**: Holstein **2×1**, Cheese Press **2×2**; anchor at top-left; occupancy on all cells; sprite only on anchor tile in snapshot (`placementIsAnchor`).  
@@ -425,6 +426,7 @@ Files: `appsettings.json` (base), `appsettings.Development.json`, `appsettings.P
 | 2026-05-27 | **Sprite copy script** hardened to reject Cursor screenshot PNGs (`c__Users_*`) and auto-delete any stray copies in `public/assets/farm/`. |
 | 2026-05-27 | **BGM restore + auth backgrounds** — audio back under `public/assets/audio/`; CSS points to `/assets/farm/bg-*.png`; `config.production.example.json` for VPS. |
 | 2026-05-27 | **Favicons + OG metadata** — `generate-brand-images.mjs` (square favicons + `og-share.png`); Open Graph / Twitter tags in `index.html` for link previews. |
+| 2026-05-27 | **Farm camera polish** — fix sync jumping to bottom-right on mobile; preserve pan on Sync; restore horizontal pan when viewport wider than grid; sharper Phaser timer labels (`farmTextResolution`). |
 
 ## 14) Maintenance
 

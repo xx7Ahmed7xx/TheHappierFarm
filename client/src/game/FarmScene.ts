@@ -37,6 +37,7 @@ import {
 } from './isometric';
 import {
   applyCameraPanScreenDelta,
+  centerFarmCamera,
   clampFarmCameraScroll,
   clientToCameraPoint,
   setCameraZoomAt,
@@ -44,6 +45,7 @@ import {
 import { fitFarmSpriteDisplay } from './farmSpriteDisplay';
 import {
   emojiLabelFontSize,
+  farmTextResolution,
   labelLiftWorld,
   labelTextPadding,
   timerLabelFontSize,
@@ -188,7 +190,10 @@ class TileStack extends Phaser.GameObjects.Container {
       .text(TILE_ANCHOR_X, TILE_ANCHOR_Y, '', EMOJI_STYLE)
       .setOrigin(0.5, 1)
       .setFontSize(26);
-    this.timerText = scene.add.text(TILE_ANCHOR_X, TILE_ANCHOR_Y - 48, '', TIMER_STYLE).setOrigin(0.5, 1);
+    this.timerText = scene.add
+      .text(TILE_ANCHOR_X, TILE_ANCHOR_Y - 48, '', TIMER_STYLE)
+      .setOrigin(0.5, 1)
+      .setResolution(farmTextResolution());
     this.hitGfx = scene.add.graphics();
 
     this.add([this.soilGfx, this.soilSprite, this.contentSprite, this.emojiText, this.timerText, this.hitGfx]);
@@ -602,6 +607,8 @@ export class FarmScene extends Phaser.Scene {
   private zoomLevel = loadFarmZoom() ?? 1;
   /** True after the scale manager has reported the real game-container size. */
   private viewportReady = false;
+  /** Avoid re-centering the camera on every farm sync (only first layout or grid resize). */
+  private farmCameraPlaced = false;
   private static readonly ZOOM_MIN = 0.55;
   private static readonly ZOOM_MAX = 1.85;
   private static readonly ZOOM_STEP = 0.1;
@@ -622,7 +629,7 @@ export class FarmScene extends Phaser.Scene {
     this.farmWorld.add([this.groundBed, this.dragHighlightGfx]);
     this.liftDragHighlight();
 
-    this.cameras.main.setRoundPixels(true);
+    this.cameras.main.setRoundPixels(false);
     this.input.mouse?.disableContextMenu();
     this.setupZoom();
 
@@ -955,16 +962,7 @@ export class FarmScene extends Phaser.Scene {
     if (!this.farmWorld) {
       return;
     }
-    const cam = this.cameras.main;
-    if (cam.width < 1 || cam.height < 1) {
-      return;
-    }
-    const center = farmDiamondCenter(this.gridSize, this.origin);
-    const viewW = cam.width / cam.zoom;
-    const viewH = cam.height / cam.zoom;
-    cam.scrollX = center.x - viewW / 2;
-    cam.scrollY = center.y - viewH / 2;
-    this.clampCameraScroll();
+    centerFarmCamera(this.cameras.main, farmWorldBounds(this.gridSize, this.origin));
   }
 
   private ensureGridStacks(): void {
@@ -1025,8 +1023,9 @@ export class FarmScene extends Phaser.Scene {
       stack.setPosition(wx, wy);
     }
     this.repositionPlacementSprites();
-    if (this.gridSize !== prev || prev === 9) {
+    if (!this.farmCameraPlaced || this.gridSize !== prev) {
       this.centerCameraOnFarm();
+      this.farmCameraPlaced = true;
     } else {
       this.clampCameraScroll();
     }

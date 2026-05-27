@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { footprintScreenBounds, footprintStackDepth } from './farmFootprint';
-import { labelLiftWorld, labelTextPadding, timerLabelFontSize } from './farmLabelScale';
+import { farmTextResolution, labelLiftWorld, labelTextPadding, timerLabelFontSize } from './farmLabelScale';
 
 const LABEL_STYLE: Phaser.Types.GameObjects.Text.TextStyle = {
   fontFamily: 'Segoe UI, system-ui, sans-serif',
@@ -70,7 +70,7 @@ export class PlacementLabelLayer {
     let label = this.labels.get(k);
     const pad = labelTextPadding(this.zoom, footprintW, footprintH);
     if (!label) {
-      label = this.scene.add.text(x, y, text, LABEL_STYLE).setOrigin(0.5, 1);
+      label = this.scene.add.text(x, y, text, LABEL_STYLE).setOrigin(0.5, 1).setResolution(farmTextResolution());
       label.setFontSize(timerLabelFontSize(this.zoom, footprintW, footprintH));
       label.setPadding(pad.x, pad.y);
       this.labels.set(k, label);

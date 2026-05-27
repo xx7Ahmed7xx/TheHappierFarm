@@ -5,6 +5,14 @@ import { TILE_HALF_H, TILE_HALF_W } from './isometric';
 const ZOOM_MIN = 0.55;
 const ZOOM_MAX = 1.85;
 
+/** Sharper Phaser text on retina / mobile (cap avoids huge canvases). */
+export function farmTextResolution(): number {
+  if (typeof window === 'undefined') {
+    return 1;
+  }
+  return Math.min(Math.max(window.devicePixelRatio || 1, 1), 2.5);
+}
+
 /** 1×1 tile diamond size on screen in pixels (world units × zoom). */
 export function tileScreenSize(zoom: number): { width: number; height: number } {
   const z = Phaser.Math.Clamp(zoom, ZOOM_MIN, ZOOM_MAX);
@@ -40,9 +48,9 @@ export function labelFontSizePx(
 
 export function timerLabelFontSize(zoom: number, footprintW = 1, footprintH = 1): string {
   return `${labelFontSizePx(zoom, footprintW, footprintH, {
-    widthFrac: 0.11,
-    minPx: 8,
-    maxPx: 12,
+    widthFrac: 0.13,
+    minPx: 10,
+    maxPx: 14,
   })}px`;
 }
 

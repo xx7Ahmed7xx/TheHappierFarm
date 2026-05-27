@@ -43,19 +43,39 @@ export function clampFarmCameraScroll(
   let minSY = bounds.minY - slackY;
   let maxSY = bounds.maxY - viewH + slackY;
 
-  if (maxSX < minSX) {
-    const mid = (minSX + maxSX) / 2;
-    minSX = mid;
-    maxSX = mid;
-  }
-  if (maxSY < minSY) {
-    const mid = (minSY + maxSY) / 2;
-    minSY = mid;
-    maxSY = mid;
+  // Viewport wider than farm: keep roughly centered but still allow pan slack.
+  if (viewW >= bounds.width) {
+    const centeredX = bounds.centerX - viewW / 2;
+    cam.scrollX = Phaser.Math.Clamp(cam.scrollX, centeredX - slackX, centeredX + slackX);
+  } else if (maxSX < minSX) {
+    cam.scrollX = (minSX + maxSX) / 2;
+  } else {
+    cam.scrollX = Phaser.Math.Clamp(cam.scrollX, minSX, maxSX);
   }
 
-  cam.scrollX = Phaser.Math.Clamp(cam.scrollX, minSX, maxSX);
-  cam.scrollY = Phaser.Math.Clamp(cam.scrollY, minSY, maxSY);
+  if (viewH >= bounds.height) {
+    const centeredY = bounds.centerY - viewH / 2;
+    cam.scrollY = Phaser.Math.Clamp(cam.scrollY, centeredY - slackY, centeredY + slackY);
+  } else if (maxSY < minSY) {
+    cam.scrollY = (minSY + maxSY) / 2;
+  } else {
+    cam.scrollY = Phaser.Math.Clamp(cam.scrollY, minSY, maxSY);
+  }
+}
+
+/** Place the farm diamond in the middle of the current viewport. */
+export function centerFarmCamera(
+  cam: Phaser.Cameras.Scene2D.Camera,
+  bounds: FarmWorldBounds,
+): void {
+  if (cam.width < 1 || cam.height < 1) {
+    return;
+  }
+  const viewW = cam.width / cam.zoom;
+  const viewH = cam.height / cam.zoom;
+  cam.scrollX = bounds.centerX - viewW / 2;
+  cam.scrollY = bounds.centerY - viewH / 2;
+  clampFarmCameraScroll(cam, bounds);
 }
 
 /** Keep the world point under (screenX, screenY) fixed while changing zoom. */
