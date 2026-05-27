@@ -163,34 +163,52 @@ dotnet HappierFarm.WebAPI.dll
 
 Or host behind **IIS** / **nginx** with WebSocket support for `/hubs/game`.
 
-### 5. Serve the client
+### 5. Serve the client (two IIS sites)
+
+| Site | Hostname | Contents |
+|------|----------|----------|
+| **Game** | `https://thehappierfarmx7.click` | `client/dist/` (static files) |
+| **API** | `https://api.thehappierfarmx7.click` | Published `HappierFarm.WebAPI` |
+
+Build and deploy:
 
 ```powershell
 cd client
 npm run build
 ```
 
-Deploy `client/dist/` to the same site (static files) or a CDN. Reverse-proxy:
+Copy **everything inside** `client/dist/` to the game site’s physical path.
 
-| Path | Target |
-|------|--------|
-| `/` | Static files from `dist/` |
-| `/api` | Kestrel API |
-| `/hubs` | Kestrel SignalR (WebSockets) |
+**Point the game at the API (no IIS proxy):** edit **`config.json`** on the server (next to `index.html`):
 
-**CORS:** the browser origin must match `Cors:AllowedOrigins` exactly (scheme + host + port). If the game is at `https://farm.example.com`, that full origin must be listed.
-
-### 6. Client in production
-
-Usually the SPA is served from the **same host** as the API, so the client keeps relative URLs (`/api/...`, `/hubs/...`) and you do **not** need `VITE_API_ORIGIN` in production.
-
-If the API is on a different subdomain, build with env vars (example):
-
-```powershell
-# Only if API is on another origin — otherwise skip
-$env:VITE_API_ORIGIN = "https://api.your-domain.com"
-npm run build
+```json
+{
+  "apiBaseUrl": "https://api.thehappierfarmx7.click"
+}
 ```
+
+The app loads this file at startup. Change it anytime after deploy — no rebuild. For local dev, leave `apiBaseUrl` as `""` (Vite proxies `/api` and `/hubs`).
+
+See `client/public/config.production.example.json` for a template.
+
+**API `appsettings.Production` (required for cross-origin):**
+
+```json
+"Cors": {
+  "AllowedOrigins": [ "https://thehappierfarmx7.click" ]
+},
+"AllowedHosts": "api.thehappierfarmx7.click;thehappierfarmx7.click"
+```
+
+Restart the API app pool after changing CORS.
+
+### 6. Verify frontend → API
+
+1. Open `https://thehappierfarmx7.click` — login page loads.
+2. DevTools → Network → login → `POST https://api.thehappierfarmx7.click/api/auth/login` (not the game host) → **401** or **200**, not **404**.
+3. If **404**: wrong `apiBaseUrl` in `config.json`, or API site not running.
+4. If **CORS error**: add the exact game URL to `Cors:AllowedOrigins` on the API.
+5. After login, SignalR connects to `https://api.thehappierfarmx7.click/hubs/game`.
 
 ---
 
@@ -233,6 +251,8 @@ If publish runs EF scripts and fails on a fresh VPS database, **drop** `HappierF
 | Symptom | Likely fix |
 |---------|------------|
 | Publish: missing table / script failed | Drop empty or partial DB; use `dotnet ef database update` — see [migrations.md](migrations.md) |
+| Login **404** on game host `/api/...` | Set `apiBaseUrl` in `dist/config.json` to `https://api.thehappierfarmx7.click`; see §5 |
+| **CORS** blocked | Add game origin to API `Cors:AllowedOrigins` |
 | CORS error in browser | Add exact browser URL to `Cors:AllowedOrigins` |
 | 401 / invalid token after deploy | JWT signing key changed — users must log in again |
 | API starts then DB errors | Check `ConnectionStrings__DefaultConnection` on the server |

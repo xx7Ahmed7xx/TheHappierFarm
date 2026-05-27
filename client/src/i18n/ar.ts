@@ -25,6 +25,10 @@ export const ar: MessageTree = {
     displayName: 'اسم المزارع',
     email: 'البريد الإلكتروني',
     password: 'كلمة المرور',
+    emailPlaceholder: 'you@example.com',
+    passwordPlaceholder: 'كلمة المرور',
+    displayNamePlaceholder: 'مثال: مروج مشمس',
+    passwordHintPlaceholder: '8 أحرف على الأقل، رقم واحد',
     loginBtn: 'تسجيل الدخول',
     registerBtn: 'التسجيل واللعب',
     newHere: 'جديد هنا؟',
@@ -32,10 +36,20 @@ export const ar: MessageTree = {
     haveAccount: 'لديك حساب؟',
     goLogin: 'تسجيل الدخول',
   },
+  validation: {
+    required: 'هذا الحقل مطلوب.',
+    requiredEmail: 'أدخل بريدك الإلكتروني.',
+    requiredPassword: 'أدخل كلمة المرور.',
+    requiredDisplayName: 'أدخل اسم المزارع.',
+    invalidEmail: 'أدخل بريداً إلكترونياً صالحاً.',
+    passwordTooShort: 'كلمة المرور 8 أحرف على الأقل.',
+    displayNameTooShort: 'اسم المزارع حرفان على الأقل.',
+    invalid: 'تحقق من هذا الحقل.',
+  },
   hud: {
     loading: 'جاري التحميل…',
     gold: 'ذهب',
-    dinars: 'دنانير',
+    dinars: 'دينار',
     xp: 'خبرة',
     level: 'مستوى',
     sync: 'مزامنة',
@@ -51,8 +65,15 @@ export const ar: MessageTree = {
     musicOn: 'الموسيقى تشغيل',
     musicOff: 'الموسيقى إيقاف',
   },
+  mobile: {
+    tools: 'أدوات',
+    barn: 'حظيرة',
+    settings: 'إعدادات',
+    close: 'إغلاق القائمة',
+  },
   tools: {
     label: 'أدوات',
+    ariaLabel: 'أدوات المزرعة',
     plant: 'زراعة',
     harvest: 'حصاد',
     place: 'وضع',
@@ -62,6 +83,7 @@ export const ar: MessageTree = {
   },
   inventory: {
     title: 'الحظيرة والمخزون',
+    filterAria: 'تصفية المخزون',
     all: 'الكل',
     crops: 'محاصيل',
     animal: 'حيوان',
@@ -79,6 +101,10 @@ export const ar: MessageTree = {
     placeFactory: 'ضع على المزرعة · حمّل المواد، انتظر، اجمع عند الجاهزية',
     placeBarn: 'ضع على المزرعة · انقر الحظيرة لترقية السعة',
     placeDecor: 'ضع على المزرعة (ديكور)',
+    storageUsed: 'التخزين: {used} / {capacity} خانة{fullSuffix}',
+    storageDetail:
+      'مستوى المزارع {level} · {baseCap} أساسي (+{perLevel} لكل مستوى){barnSuffix} · مزرعة {grid}×{grid}',
+    barnSlotsBonus: ' · ترقيات الحظيرة +{bonus}',
   },
   hand: {
     loading: 'جاري التحميل…',
@@ -104,6 +130,9 @@ export const ar: MessageTree = {
     decor: 'ديكور',
   },
   shop: {
+    market: 'السوق',
+    tabsAria: 'أقسام السوق',
+    locked: 'مقفل',
     crops: 'محاصيل',
     animals: 'حيوانات',
     factories: 'مصانع',
@@ -114,12 +143,16 @@ export const ar: MessageTree = {
     buyStash: 'شراء للمخزن',
     atCap: 'الحد الأقصى',
     placed: 'موضوع',
-    lv: 'م {n}',
+    lv: 'مستوى {n}',
+    requiresLevel: 'مستوى {n} مطلوب',
+    goldPrice: '{price} ذهب',
+    goldPerTile: '{price} ذهب/بلاطة',
     expansionEmpty: 'التوسيع غير متاح حالياً.',
     expandTitle: 'توسيع إلى {size}×{size}',
     expandMeta: '+{tiles} بلاطات · السعر يرتفع · زر الماوس الأوسط أو أداة التحريك',
     buyLand: 'شراء أرض',
-    cropMeta: '{time} · {price} ذ للزراعة · حصاد → حظيرة · بيع {sell} ذ',
+    cropMeta:
+      'ينمو {time} · زراعة {price} ذ/بلاطة · حصاد للحظيرة · بيع {sell} ذ للوحدة',
     animalMeta:
       'بصمة {w}×{h} · أطعم {feedQty} {feed} من الحظيرة · كل {time} → {qty} {product} · {owned}/{max} مملوك · {placed}/{maxPlaced} موضوع',
     factoryMeta:
@@ -128,6 +161,10 @@ export const ar: MessageTree = {
       'تخزين 2×2 · م{level} أساسي + ترقيات (+20/+50/+100) · مستوى {tier}/3 · انقر الحظيرة الموضوعة',
   },
   farm: {
+    ariaLabel: 'مزرعتك',
+    zoomAria: 'تكبير',
+    zoomIn: 'تكبير',
+    zoomOut: 'تصغير',
     panHint:
       'اسحب بزر الماوس الأوسط للتحريك · أداة التحريك · إصبعان على اللمس · +/− للتكبير',
     eventTimingBanner: '{name}: {message} ({percent}% سرعة)',
@@ -253,5 +290,6 @@ export const ar: MessageTree = {
       'ارتقيت للمستوى {level}! سعة الحظيرة الآن {cap} خانة — راجع السوق للفتحات الجديدة.',
     signedOut: 'تم تسجيل الخروج. نراك في المزرعة قريباً!',
     sessionExpired: 'انتهت الجلسة — يُرجى تسجيل الدخول مجدداً.',
+    displayNameShort: 'يجب أن يكون اسم المزارع حرفين على الأقل.',
   },
 };

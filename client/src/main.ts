@@ -6,6 +6,7 @@ import {
   setHudLogRaw,
 } from './i18n/hudLog';
 import { bindDomLocale, setLangSwitcherPlacement } from './i18n/dom';
+import { validateAuthInputs } from './i18n/formValidation';
 import {
   catalogAnimalName,
   catalogCropName,
@@ -76,6 +77,8 @@ import {
 } from './ui/confirmModal';
 import { registerFarmInputHooks } from './ui/farmInputLock';
 import { hideBootScreen, runBootSequence, showBootScreen, type BootStep } from './ui/bootLoader';
+import { hubGameUrl, loadRuntimeConfig } from './runtimeConfig';
+import { initMobileMenu } from './ui/mobileMenu';
 
 function resourceLabel(code: string, snap?: FarmSnapshot): string {
   if (snap) {
@@ -241,7 +244,7 @@ function syncFarmCursor(): void {
 
 function buildHubConnection() {
   return new HubConnectionBuilder()
-    .withUrl('/hubs/game', {
+    .withUrl(hubGameUrl(), {
       accessTokenFactory: () => Network.getAccessToken() ?? '',
       transport: HttpTransportType.WebSockets | HttpTransportType.ServerSentEvents | HttpTransportType.LongPolling,
     })
@@ -250,7 +253,12 @@ function buildHubConnection() {
     .build();
 }
 
-let hub = buildHubConnection();
+let hub: ReturnType<typeof buildHubConnection> | null = null;
+
+function initHub(): void {
+  hub = buildHubConnection();
+  wireHubHandlers(hub);
+}
 
 function wireHubHandlers(connection: ReturnType<typeof buildHubConnection>): void {
   connection.on('farmStateChanged', () => {
@@ -268,8 +276,6 @@ function wireHubHandlers(connection: ReturnType<typeof buildHubConnection>): voi
     }, 200);
   });
 }
-
-wireHubHandlers(hub);
 
 function bindAudioUnlock(): void {
   const unlock = () => unlockAudio();
@@ -487,7 +493,7 @@ async function startLive(): Promise<void> {
     return;
   }
 
-  if (hub.state === 'Connected') {
+  if (hub?.state === 'Connected') {
     try {
       await hub.invoke('LeaveFarm', userId);
     } catch {
@@ -496,10 +502,9 @@ async function startLive(): Promise<void> {
     await hub.stop();
   }
 
-  hub = buildHubConnection();
-  wireHubHandlers(hub);
-  await hub.start();
-  await hub.invoke('JoinFarm', userId);
+  initHub();
+  await hub!.start();
+  await hub!.invoke('JoinFarm', userId);
 }
 
 function renderMeta(snap: FarmSnapshot): void {
@@ -1471,9 +1476,19 @@ document.querySelector<HTMLButtonElement>('#go-login')!.addEventListener('click'
 
 document.querySelector<HTMLButtonElement>('#btn-register')!.addEventListener('click', () => {
   void (async () => {
+    if (
+      !validateAuthInputs([
+        'register-display-name',
+        'register-email',
+        'register-password',
+      ])
+    ) {
+      return;
+    }
+
     const displayName = registerDisplayName.value.trim();
     if (displayName.length < 2) {
-      registerMessage('Display name must be at least 2 characters.');
+      registerMessage(t('validation.displayNameTooShort'));
       return;
     }
 
@@ -1493,6 +1508,10 @@ document.querySelector<HTMLButtonElement>('#btn-register')!.addEventListener('cl
 
 document.querySelector<HTMLButtonElement>('#btn-login')!.addEventListener('click', () => {
   void (async () => {
+    if (!validateAuthInputs(['login-email', 'login-password'])) {
+      return;
+    }
+
     try {
       const auth = await Network.login(loginEmail.value.trim(), loginPassword.value);
       Network.setSession(auth);
@@ -1503,10 +1522,11 @@ document.querySelector<HTMLButtonElement>('#btn-login')!.addEventListener('click
   })();
 });
 
-document.querySelector<HTMLButtonElement>('#btn-logout')!.addEventListener('click', () => {
+function wireLogout(): void {
+  const handler = () => {
   void (async () => {
     const uid = Network.getUserId();
-    if (hub.state === 'Connected' && uid) {
+    if (hub?.state === 'Connected' && uid) {
       try {
         await hub.invoke('LeaveFarm', uid);
       } catch {
@@ -1520,13 +1540,24 @@ document.querySelector<HTMLButtonElement>('#btn-logout')!.addEventListener('clic
     showLoginPage();
     loginMessage(t('log.signedOut'));
   })();
-});
+  };
+  document.querySelector<HTMLButtonElement>('#btn-logout')?.addEventListener('click', handler);
+  document.querySelector<HTMLButtonElement>('#btn-logout-mobile')?.addEventListener('click', handler);
+}
 
-document.querySelector<HTMLButtonElement>('#btn-refresh')!.addEventListener('click', () => {
-  void refreshFarm()
-    .then(() => setHudLog('log.farmSynced'))
-    .catch((err: unknown) => log(err instanceof Error ? err.message : String(err)));
-});
+wireLogout();
+
+function wireRefresh(): void {
+  const handler = () => {
+    void refreshFarm()
+      .then(() => setHudLog('log.farmSynced'))
+      .catch((err: unknown) => log(err instanceof Error ? err.message : String(err)));
+  };
+  document.querySelector<HTMLButtonElement>('#btn-refresh')?.addEventListener('click', handler);
+  document.querySelector<HTMLButtonElement>('#btn-refresh-mobile')?.addEventListener('click', handler);
+}
+
+wireRefresh();
 
 window.setInterval(() => {
   if (!Network.getAccessToken() || appEl.hidden || dragActionPending) {
@@ -1539,6 +1570,10 @@ window.setInterval(() => {
 }, 8000);
 
 void (async () => {
+  await loadRuntimeConfig();
+  initHub();
+  initMobileMenu();
+
   if (Network.getAccessToken()) {
     try {
       const profile = await Network.getProfile();

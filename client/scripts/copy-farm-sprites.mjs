@@ -54,13 +54,32 @@ const legacyNames = [
   ['factory-4.png', 'farm-factory-4.png'],
 ];
 
+const legacySet = new Set(legacyNames.map(([from]) => from));
+
+/** Real game sprites only — excludes Cursor chat screenshot PNGs (c__Users_*). */
+function isAllowedSpriteBasename(base) {
+  if (/^c__Users_/i.test(base)) {
+    return false;
+  }
+  if (base.startsWith('farm-')) {
+    return true;
+  }
+  if (/^bg-(boot|login|register)\.png$/i.test(base)) {
+    return true;
+  }
+  if (/happier-farm-logo/i.test(base)) {
+    return true;
+  }
+  return legacySet.has(base);
+}
+
 function collectPngs(dir) {
   if (!fs.existsSync(dir)) {
     return [];
   }
   return fs
     .readdirSync(dir)
-    .filter((f) => f.toLowerCase().endsWith('.png'))
+    .filter((f) => f.toLowerCase().endsWith('.png') && isAllowedSpriteBasename(f))
     .map((f) => path.join(dir, f));
 }
 
@@ -74,6 +93,9 @@ for (const srcDir of sources) {
     if (legacy) {
       canonical = legacy[1];
     }
+    if (!isAllowedSpriteBasename(canonical)) {
+      continue;
+    }
     if (!byName.has(canonical)) {
       byName.set(canonical, file);
     }
@@ -85,10 +107,22 @@ for (const srcDir of sources) {
 
 fs.mkdirSync(dest, { recursive: true });
 
+/** Remove screenshot PNGs that were copied before the filter existed. */
+let removed = 0;
+for (const f of fs.readdirSync(dest)) {
+  if (/^c__Users_/i.test(f)) {
+    fs.unlinkSync(path.join(dest, f));
+    removed++;
+  }
+}
+
 if (byName.size === 0) {
   console.warn(
     '[farm-sprites] No PNG sources found. Game uses procedural sprites until you add files to public/assets/farm/',
   );
+  if (removed > 0) {
+    console.log(`[farm-sprites] removed ${removed} stray screenshot file(s) from public/assets/farm/`);
+  }
   process.exit(0);
 }
 
@@ -117,6 +151,7 @@ for (const [from, to] of aliases) {
   }
 }
 
+const removedNote = removed > 0 ? `, ${removed} screenshot(s) removed` : '';
 console.log(
-  `[farm-sprites] ${byName.size} sprite(s) available, ${copied} copied → public/assets/farm/`,
+  `[farm-sprites] ${byName.size} sprite(s) available, ${copied} copied → public/assets/farm/${removedNote}`,
 );

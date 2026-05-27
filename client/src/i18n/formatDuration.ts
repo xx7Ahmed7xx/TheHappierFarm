@@ -1,4 +1,4 @@
-import { getLocale } from './core';
+import { getLocale, t } from './core';
 import type { Locale } from './types';
 
 type UnitKey = 's' | 'm' | 'h' | 'd';
@@ -40,4 +40,15 @@ export function formatDuration(totalSeconds: number): string {
     return `${d}${u.d} ${h}${u.h}`;
   }
   return `${d}${u.d}`;
+}
+
+const MOBILE_UI_MQ = '(max-width: 960px), (max-height: 560px)';
+
+/** Farm timer chips: full phrase on desktop, compact duration only on mobile. */
+export function formatGameTimer(totalSeconds: number): string {
+  const time = formatDuration(totalSeconds);
+  if (typeof window !== 'undefined' && window.matchMedia(MOBILE_UI_MQ).matches) {
+    return time;
+  }
+  return t('game.timerLeft', { time });
 }

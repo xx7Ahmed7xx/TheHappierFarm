@@ -5,6 +5,7 @@ import type {
   FarmTileDto,
   PlayerProfile,
 } from './types';
+import { apiUrl } from './runtimeConfig';
 
 function numOrNull(value: unknown): number | null {
   if (value === null || value === undefined || value === '') {
@@ -241,7 +242,7 @@ export async function register(
   password: string,
   displayName: string,
 ): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/register', {
+  const res = await fetch(apiUrl('/api/auth/register'), {
     method: 'POST',
     headers: { ...jsonHeaders },
     body: JSON.stringify({ email, password, displayName: displayName.trim() }),
@@ -260,7 +261,7 @@ export async function register(
 }
 
 export async function login(email: string, password: string): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/login', {
+  const res = await fetch(apiUrl('/api/auth/login'), {
     method: 'POST',
     headers: { ...jsonHeaders },
     body: JSON.stringify({ email, password }),
@@ -278,7 +279,7 @@ export async function login(email: string, password: string): Promise<AuthRespon
 }
 
 export async function getProfile(): Promise<PlayerProfile> {
-  const res = await fetch('/api/auth/me', { headers: authHeaders() });
+  const res = await fetch(apiUrl('/api/auth/me'), { headers: authHeaders() });
 
   if (res.status === 401) {
     clearSession();
@@ -294,7 +295,7 @@ export async function getProfile(): Promise<PlayerProfile> {
 }
 
 export async function getFarm(): Promise<FarmSnapshot> {
-  const res = await fetch('/api/farm', {
+  const res = await fetch(apiUrl('/api/farm'), {
     headers: authHeaders(),
     cache: 'no-store',
   });
@@ -315,7 +316,7 @@ export async function getFarm(): Promise<FarmSnapshot> {
 
 export async function buySeeds(cropTypeId: number, quantity: number): Promise<void> {
   requireToken();
-  const res = await fetch('/api/shop/buy-seeds', {
+  const res = await fetch(apiUrl('/api/shop/buy-seeds'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ cropTypeId, quantity }),
@@ -329,7 +330,7 @@ export async function buySeeds(cropTypeId: number, quantity: number): Promise<vo
 
 export async function plantCrop(x: number, y: number, cropTypeId: number): Promise<void> {
   requireToken();
-  const res = await fetch('/api/farm/plant', {
+  const res = await fetch(apiUrl('/api/farm/plant'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ x, y, cropTypeId }),
@@ -343,7 +344,7 @@ export async function plantCrop(x: number, y: number, cropTypeId: number): Promi
 
 export async function harvestCrop(x: number, y: number): Promise<void> {
   requireToken();
-  const res = await fetch('/api/farm/harvest', {
+  const res = await fetch(apiUrl('/api/farm/harvest'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ x, y }),
@@ -360,7 +361,7 @@ export async function plantBatch(
   tiles: { x: number; y: number }[],
 ): Promise<BatchActionResult> {
   requireToken();
-  const res = await fetch('/api/farm/plant-batch', {
+  const res = await fetch(apiUrl('/api/farm/plant-batch'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ cropTypeId, tiles }),
@@ -376,7 +377,7 @@ export async function plantBatch(
 
 export async function harvestBatch(tiles: { x: number; y: number }[]): Promise<BatchActionResult> {
   requireToken();
-  const res = await fetch('/api/farm/harvest-batch', {
+  const res = await fetch(apiUrl('/api/farm/harvest-batch'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ tiles }),
@@ -392,7 +393,7 @@ export async function harvestBatch(tiles: { x: number; y: number }[]): Promise<B
 
 export async function buyAnimal(animalTypeId: number, quantity: number): Promise<void> {
   requireToken();
-  const res = await fetch('/api/shop/buy-animal', {
+  const res = await fetch(apiUrl('/api/shop/buy-animal'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ animalTypeId, quantity }),
@@ -406,7 +407,7 @@ export async function buyAnimal(animalTypeId: number, quantity: number): Promise
 
 export async function buyFactory(factoryTypeId: number, quantity: number): Promise<void> {
   requireToken();
-  const res = await fetch('/api/shop/buy-factory', {
+  const res = await fetch(apiUrl('/api/shop/buy-factory'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ factoryTypeId, quantity }),
@@ -420,7 +421,7 @@ export async function buyFactory(factoryTypeId: number, quantity: number): Promi
 
 export async function buyDecoration(decorationTypeId: number, quantity: number): Promise<void> {
   requireToken();
-  const res = await fetch('/api/shop/buy-decoration', {
+  const res = await fetch(apiUrl('/api/shop/buy-decoration'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ decorationTypeId, quantity }),
@@ -434,7 +435,7 @@ export async function buyDecoration(decorationTypeId: number, quantity: number):
 
 export async function buyFarmExpansion(): Promise<void> {
   requireToken();
-  const res = await fetch('/api/shop/buy-expansion', {
+  const res = await fetch(apiUrl('/api/shop/buy-expansion'), {
     method: 'POST',
     headers: authHeaders(),
     body: '{}',
@@ -448,7 +449,7 @@ export async function buyFarmExpansion(): Promise<void> {
 
 export async function upgradeBarn(): Promise<number> {
   requireToken();
-  const res = await fetch('/api/barn/upgrade', {
+  const res = await fetch(apiUrl('/api/barn/upgrade'), {
     method: 'POST',
     headers: authHeaders(),
     body: '{}',
@@ -465,7 +466,7 @@ export async function upgradeBarn(): Promise<number> {
 
 export async function collectAnimals(): Promise<number> {
   requireToken();
-  const res = await fetch('/api/barn/collect-animals', {
+  const res = await fetch(apiUrl('/api/barn/collect-animals'), {
     method: 'POST',
     headers: authHeaders(),
     body: '{}',
@@ -486,7 +487,7 @@ export async function feedAnimalAt(
   y: number,
 ): Promise<void> {
   requireToken();
-  const res = await fetch('/api/barn/feed-animal', {
+  const res = await fetch(apiUrl('/api/barn/feed-animal'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ animalTypeId, x, y }),
@@ -504,7 +505,7 @@ export async function collectAnimalAt(
   y: number,
 ): Promise<number> {
   requireToken();
-  const res = await fetch('/api/barn/collect-animal', {
+  const res = await fetch(apiUrl('/api/barn/collect-animal'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ animalTypeId, x, y }),
@@ -526,7 +527,7 @@ export async function placeItem(
   y: number,
 ): Promise<void> {
   requireToken();
-  const res = await fetch('/api/farm/place', {
+  const res = await fetch(apiUrl('/api/farm/place'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ kind, typeId, x, y }),
@@ -540,7 +541,7 @@ export async function placeItem(
 
 export async function pickupItem(x: number, y: number): Promise<void> {
   requireToken();
-  const res = await fetch('/api/farm/pickup', {
+  const res = await fetch(apiUrl('/api/farm/pickup'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ x, y }),
@@ -559,7 +560,7 @@ export async function processFactory(
   batchRuns = 1,
 ): Promise<number> {
   requireToken();
-  const res = await fetch('/api/barn/process-factory', {
+  const res = await fetch(apiUrl('/api/barn/process-factory'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ factoryTypeId, x, y, batchRuns }),
@@ -576,7 +577,7 @@ export async function processFactory(
 
 export async function collectFactories(): Promise<number> {
   requireToken();
-  const res = await fetch('/api/barn/collect-factories', {
+  const res = await fetch(apiUrl('/api/barn/collect-factories'), {
     method: 'POST',
     headers: authHeaders(),
   });
@@ -592,7 +593,7 @@ export async function collectFactories(): Promise<number> {
 
 export async function sellResource(resourceCode: string, quantity: number): Promise<number> {
   requireToken();
-  const res = await fetch('/api/barn/sell-resource', {
+  const res = await fetch(apiUrl('/api/barn/sell-resource'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ resourceCode, quantity }),

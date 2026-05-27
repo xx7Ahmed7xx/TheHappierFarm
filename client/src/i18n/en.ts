@@ -25,6 +25,10 @@ export const en: MessageTree = {
     displayName: 'Display name',
     email: 'Email',
     password: 'Password',
+    emailPlaceholder: 'you@example.com',
+    passwordPlaceholder: 'Your password',
+    displayNamePlaceholder: 'e.g. Sunny Meadow',
+    passwordHintPlaceholder: '8+ chars, 1 digit',
     loginBtn: 'Log in',
     registerBtn: 'Register & play',
     newHere: 'New here?',
@@ -32,10 +36,20 @@ export const en: MessageTree = {
     haveAccount: 'Already have an account?',
     goLogin: 'Log in',
   },
+  validation: {
+    required: 'This field is required.',
+    requiredEmail: 'Enter your email address.',
+    requiredPassword: 'Enter your password.',
+    requiredDisplayName: 'Enter a display name.',
+    invalidEmail: 'Enter a valid email address.',
+    passwordTooShort: 'Password must be at least 8 characters.',
+    displayNameTooShort: 'Display name must be at least 2 characters.',
+    invalid: 'Please check this field.',
+  },
   hud: {
     loading: 'Loading…',
     gold: 'Gold',
-    dinars: 'Dinars',
+    dinars: 'Dinar',
     xp: 'XP',
     level: 'Level',
     sync: 'Sync',
@@ -51,8 +65,15 @@ export const en: MessageTree = {
     musicOn: 'Music on',
     musicOff: 'Music off',
   },
+  mobile: {
+    tools: 'Tools',
+    barn: 'Barn',
+    settings: 'Settings',
+    close: 'Close menu',
+  },
   tools: {
     label: 'Tools',
+    ariaLabel: 'Farm tools',
     plant: 'Plant',
     harvest: 'Harvest',
     place: 'Place',
@@ -62,6 +83,7 @@ export const en: MessageTree = {
   },
   inventory: {
     title: 'Barn & inventory',
+    filterAria: 'Filter inventory',
     all: 'All',
     crops: 'Crops',
     animal: 'Animal',
@@ -79,6 +101,10 @@ export const en: MessageTree = {
     placeFactory: 'Place on farm · load ingredients, wait, collect when Ready',
     placeBarn: 'Place on farm · click barn to upgrade storage',
     placeDecor: 'Place on farm (decor)',
+    storageUsed: 'Storage: {used} / {capacity} slots{fullSuffix}',
+    storageDetail:
+      'Farmer level {level} · {baseCap} base (+{perLevel} per level){barnSuffix} · Farm {grid}×{grid}',
+    barnSlotsBonus: ' · Barn upgrades +{bonus}',
   },
   hand: {
     loading: 'Loading…',
@@ -104,6 +130,9 @@ export const en: MessageTree = {
     decor: 'Decor',
   },
   shop: {
+    market: 'Market',
+    tabsAria: 'Shop categories',
+    locked: 'locked',
     crops: 'Crops',
     animals: 'Animals',
     factories: 'Factories',
@@ -114,13 +143,16 @@ export const en: MessageTree = {
     buyStash: 'Buy to stash',
     atCap: 'At cap',
     placed: 'Placed',
-    lv: 'Lv {n}',
+    lv: 'Level {n}',
+    requiresLevel: 'Level {n} required',
+    goldPrice: '{price}g',
+    goldPerTile: '{price}g/tile',
     expansionEmpty: 'Expansion unavailable right now.',
     expandTitle: 'Expand to {size}×{size}',
     expandMeta: '+{tiles} tiles · price rises each step · middle-click or Move tool to pan',
     buyLand: 'Buy land',
     cropMeta:
-      '{time} · {price}g per plant · harvest → barn · sell {sell}g',
+      'Grows {time} · Plant {price}g/tile · Harvest to barn · Sell {sell}g each',
     animalMeta:
       'Footprint {w}×{h} · feed {feedQty} {feed} from barn · every {time} → {qty} {product} · {owned}/{max} owned · {placed}/{maxPlaced} placed',
     factoryMeta:
@@ -129,6 +161,10 @@ export const en: MessageTree = {
       '2×2 storage · Lv{level} base + upgrades (+20/+50/+100) · tier {tier}/3 · click placed barn to upgrade',
   },
   farm: {
+    ariaLabel: 'Your farm',
+    zoomAria: 'Zoom',
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
     panHint:
       'Middle-click drag to pan · Move tool · two fingers on touch · +/− to zoom',
     eventTimingBanner: '{name}: {message} ({percent}% speed)',
@@ -256,5 +292,6 @@ export const en: MessageTree = {
       'Level up! You reached level {level}. Barn capacity is now {cap} slots — check the market for new unlocks.',
     signedOut: 'Signed out. See you back on the farm!',
     sessionExpired: 'Session expired — please log in again.',
+    displayNameShort: 'Display name must be at least 2 characters.',
   },
 };

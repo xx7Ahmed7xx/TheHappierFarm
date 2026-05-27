@@ -1,5 +1,12 @@
 import type { Locale } from './types';
 import { getLocale } from './core';
+import {
+  ANIMAL_NAMES_AR,
+  CROP_NAMES_AR,
+  DECORATION_NAMES_AR,
+  FACTORY_NAMES_AR,
+  RESOURCE_NAMES_AR,
+} from './catalogFallbacks';
 
 function pickLocaleName(
   locale: Locale,
@@ -22,35 +29,43 @@ function pickLocaleName(
 }
 
 export function catalogCropName(
-  _id: number,
+  id: number,
   fallback: string,
   names?: { displayNameEn?: string; displayNameAr?: string },
 ): string {
-  return pickLocaleName(getLocale(), names?.displayNameEn, names?.displayNameAr, fallback);
+  const en = names?.displayNameEn?.trim() || fallback;
+  const ar = names?.displayNameAr?.trim() || CROP_NAMES_AR[id];
+  return pickLocaleName(getLocale(), en, ar, fallback);
 }
 
 export function catalogAnimalName(
-  _id: number,
+  id: number,
   fallback: string,
   names?: { displayNameEn?: string; displayNameAr?: string },
 ): string {
-  return pickLocaleName(getLocale(), names?.displayNameEn, names?.displayNameAr, fallback);
+  const en = names?.displayNameEn?.trim() || fallback;
+  const ar = names?.displayNameAr?.trim() || ANIMAL_NAMES_AR[id];
+  return pickLocaleName(getLocale(), en, ar, fallback);
 }
 
 export function catalogFactoryName(
-  _id: number,
+  id: number,
   fallback: string,
   names?: { displayNameEn?: string; displayNameAr?: string },
 ): string {
-  return pickLocaleName(getLocale(), names?.displayNameEn, names?.displayNameAr, fallback);
+  const en = names?.displayNameEn?.trim() || fallback;
+  const ar = names?.displayNameAr?.trim() || FACTORY_NAMES_AR[id];
+  return pickLocaleName(getLocale(), en, ar, fallback);
 }
 
 export function catalogDecorationName(
-  _id: number,
+  id: number,
   fallback: string,
   names?: { displayNameEn?: string; displayNameAr?: string },
 ): string {
-  return pickLocaleName(getLocale(), names?.displayNameEn, names?.displayNameAr, fallback);
+  const en = names?.displayNameEn?.trim() || fallback;
+  const ar = names?.displayNameAr?.trim() || DECORATION_NAMES_AR[id];
+  return pickLocaleName(getLocale(), en, ar, fallback);
 }
 
 export function catalogResourceName(
@@ -62,7 +77,9 @@ export function catalogResourceName(
   if (key === 'none') {
     return '—';
   }
-  return pickLocaleName(getLocale(), names?.displayNameEn, names?.displayNameAr, fallback ?? key);
+  const en = names?.displayNameEn?.trim() || fallback;
+  const ar = names?.displayNameAr?.trim() || RESOURCE_NAMES_AR[key];
+  return pickLocaleName(getLocale(), en, ar, fallback ?? key);
 }
 
 /** Resolve resource display from farm snapshot catalog when available. */

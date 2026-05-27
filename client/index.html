@@ -54,39 +54,52 @@
       <div class="auth-bg" role="presentation"></div>
       <div class="auth-overlay"></div>
       <div class="auth-content">
-        <header class="auth-brand-block">
-          <img
-            class="auth-logo-img"
-            src="/assets/brand/happier-farm-logo.png"
-            width="168" 
-            height="168"
-            alt=""
-          />
-          <p class="auth-game-name" data-i18n="brand.gameName">The Happier Farm!</p>
-        </header>
-        <h1 class="auth-title" data-i18n="auth.loginTitle">Back to the meadow</h1>
-        <p class="auth-tagline" data-i18n="auth.loginTagline">Sync your farmer ID and drop into the grid.</p>
+        <div class="auth-hero">
+          <header class="auth-brand-block">
+            <img
+              class="auth-logo-img"
+              src="/assets/brand/happier-farm-logo.png"
+              width="198"
+              height="198"
+              alt=""
+            />
+            <p class="auth-game-name" data-i18n="brand.gameName">The Happier Farm!</p>
+          </header>
+          <div class="auth-hero-text">
+            <h1 class="auth-title" data-i18n="auth.loginTitle">Back to the meadow</h1>
+            <p class="auth-tagline" data-i18n="auth.loginTagline">Sync your farmer ID and drop into the grid.</p>
+          </div>
+        </div>
+        <div class="auth-panel">
         <div class="auth-card">
           <label class="field">
-            Email
-            <input id="login-email" type="email" autocomplete="username" placeholder="you@example.com" />
+            <span data-i18n="auth.email">Email</span>
+            <input
+              id="login-email"
+              type="email"
+              autocomplete="username"
+              data-i18n-placeholder="auth.emailPlaceholder"
+              placeholder="you@example.com"
+            />
           </label>
           <label class="field">
-            Password
+            <span data-i18n="auth.password">Password</span>
             <input
               id="login-password"
               type="password"
               autocomplete="current-password"
               minlength="8"
+              data-i18n-placeholder="auth.passwordPlaceholder"
               placeholder="Your password"
             />
           </label>
           <p id="login-log" class="auth-log muted"></p>
-          <button id="btn-login" type="button" class="primary full">Log in</button>
+          <button id="btn-login" type="button" class="primary full" data-i18n="auth.loginBtn">Log in</button>
           <p class="auth-switch">
-            New here?
-            <button type="button" id="go-register" class="link">Create an account</button>
+            <span data-i18n="auth.newHere">New here?</span>
+            <button type="button" id="go-register" class="link" data-i18n="auth.createAccount">Create an account</button>
           </p>
+        </div>
         </div>
       </div>
     </div>
@@ -96,51 +109,67 @@
       <div class="auth-bg" role="presentation"></div>
       <div class="auth-overlay"></div>
       <div class="auth-content">
-        <header class="auth-brand-block">
-          <img
-            class="auth-logo-img"
-            src="/assets/brand/happier-farm-logo.png"
-            width="168"
-            height="168"
-            alt=""
-          />
-          <p class="auth-game-name" data-i18n="brand.gameName">The Happier Farm!</p>
-        </header>
-        <h1 class="auth-title" data-i18n="auth.registerTitle">Claim your plot</h1>
-        <p class="auth-tagline" data-i18n="auth.registerTagline">Forge a callsign, seed your barn, launch the simulation.</p>
+        <div class="auth-hero">
+          <header class="auth-brand-block">
+            <img
+              class="auth-logo-img"
+              src="/assets/brand/happier-farm-logo.png"
+              width="198"
+              height="198"
+              alt=""
+            />
+            <p class="auth-game-name" data-i18n="brand.gameName">The Happier Farm!</p>
+          </header>
+          <div class="auth-hero-text">
+            <h1 class="auth-title" data-i18n="auth.registerTitle">Claim your plot</h1>
+            <p class="auth-tagline" data-i18n="auth.registerTagline">Forge a callsign, seed your barn, launch the simulation.</p>
+          </div>
+        </div>
+        <div class="auth-panel">
         <div class="auth-card">
           <label class="field">
-            Display name
+            <span data-i18n="auth.displayName">Display name</span>
             <input
               id="register-display-name"
               type="text"
               maxlength="128"
               minlength="2"
               autocomplete="nickname"
+              data-i18n-placeholder="auth.displayNamePlaceholder"
               placeholder="e.g. Sunny Meadow"
               required
             />
           </label>
           <label class="field">
-            Email
-            <input id="register-email" type="email" autocomplete="username" placeholder="you@example.com" />
+            <span data-i18n="auth.email">Email</span>
+            <input
+              id="register-email"
+              type="email"
+              autocomplete="username"
+              data-i18n-placeholder="auth.emailPlaceholder"
+              placeholder="you@example.com"
+            />
           </label>
           <label class="field">
-            Password
+            <span data-i18n="auth.password">Password</span>
             <input
               id="register-password"
               type="password"
               autocomplete="new-password"
               minlength="8"
+              data-i18n-placeholder="auth.passwordHintPlaceholder"
               placeholder="8+ chars, 1 digit"
             />
           </label>
           <p id="register-log" class="auth-log muted"></p>
-          <button id="btn-register" type="button" class="primary full">Register &amp; play</button>
+          <button id="btn-register" type="button" class="primary full" data-i18n="auth.registerBtn">
+            Register &amp; play
+          </button>
           <p class="auth-switch">
-            Already have an account?
-            <button type="button" id="go-login" class="link">Log in</button>
+            <span data-i18n="auth.haveAccount">Already have an account?</span>
+            <button type="button" id="go-login" class="link" data-i18n="auth.goLogin">Log in</button>
           </p>
+        </div>
         </div>
       </div>
     </div>
@@ -159,19 +188,19 @@
             <div class="hud-brand-text">
               <p class="hud-game-title" data-i18n="brand.gameName">The Happier Farm!</p>
               <h1 id="hud-farmer-name">Farmer</h1>
-              <p id="hud-status" class="muted">Loading…</p>
+              <p id="hud-status" class="muted" data-i18n="hud.loading">Loading…</p>
             </div>
           </div>
         </div>
         <p id="hud-log" class="top-log muted" aria-live="polite"></p>
         <div class="stats">
           <div id="site-lang-switcher" class="site-lang-switcher site-lang-switcher--hud"></div>
-          <span class="stat-pill stat-currency stat-gold" title="Gold">
+          <span class="stat-pill stat-currency stat-gold" data-i18n-title="hud.gold" title="Gold">
             <span class="currency-icon currency-icon--gold" aria-hidden="true"></span>
             <span class="currency-label" data-i18n="hud.gold">Gold</span>
             <strong id="hud-gold">—</strong>
           </span>
-          <span class="stat-pill stat-currency stat-dinars" title="Dinars">
+          <span class="stat-pill stat-currency stat-dinars" data-i18n-title="hud.dinars" title="Dinars">
             <span class="currency-icon currency-icon--dinars" aria-hidden="true"></span>
             <span class="currency-label" data-i18n="hud.dinars">Dinars</span>
             <strong id="hud-dinars">—</strong>
@@ -185,102 +214,227 @@
             <span class="currency-label" data-i18n="hud.level">Level</span>
             <strong id="hud-level">—</strong>
           </span>
-          <button id="btn-refresh" type="button" class="secondary compact">Sync</button>
-          <button id="btn-logout" type="button" class="secondary compact">Log out</button>
+          <button id="btn-refresh" type="button" class="secondary compact desktop-only-hud-action" data-i18n="hud.sync">
+            Sync
+          </button>
+          <button id="btn-logout" type="button" class="secondary compact desktop-only-hud-action" data-i18n="hud.logout">
+            Log out
+          </button>
         </div>
       </header>
 
       <main class="layout">
+        <nav class="mobile-menu-rail" aria-label="Game menus">
+          <button
+            type="button"
+            class="mobile-menu-btn"
+            data-mobile-menu="tools"
+            data-i18n-title="mobile.tools"
+            title="Tools"
+          >
+            <span class="mobile-menu-icon" aria-hidden="true">🌱</span>
+            <span class="mobile-menu-label" data-i18n="mobile.tools">Tools</span>
+          </button>
+          <button
+            type="button"
+            class="mobile-menu-btn"
+            data-mobile-menu="market"
+            data-i18n-title="shop.market"
+            title="Market"
+          >
+            <span class="mobile-menu-icon" aria-hidden="true">🛒</span>
+            <span class="mobile-menu-label" data-i18n="shop.market">Market</span>
+          </button>
+          <button
+            type="button"
+            class="mobile-menu-btn"
+            data-mobile-menu="barn"
+            data-i18n-title="inventory.title"
+            title="Barn"
+          >
+            <span class="mobile-menu-icon" aria-hidden="true">📦</span>
+            <span class="mobile-menu-label" data-i18n="mobile.barn">Barn</span>
+          </button>
+          <button
+            type="button"
+            class="mobile-menu-btn"
+            data-mobile-menu="settings"
+            data-i18n-title="mobile.settings"
+            title="Settings"
+          >
+            <span class="mobile-menu-icon" aria-hidden="true">⚙</span>
+            <span class="mobile-menu-label" data-i18n="mobile.settings">Settings</span>
+          </button>
+        </nav>
+
+        <aside
+          id="mobile-menu-drawer"
+          class="mobile-menu-drawer"
+          aria-hidden="true"
+          aria-labelledby="mobile-drawer-title"
+        >
+          <header class="mobile-drawer-head">
+            <h2 id="mobile-drawer-title" class="mobile-drawer-title"></h2>
+            <button
+              type="button"
+              id="mobile-drawer-close"
+              class="mobile-drawer-close"
+              data-i18n-title="mobile.close"
+              data-i18n-aria-label="mobile.close"
+              title="Close"
+              aria-label="Close menu"
+            >
+              ×
+            </button>
+          </header>
+          <div class="mobile-drawer-body">
         <aside class="dock" aria-label="Inventory and tools">
-          <section class="dock-card dock-play">
+          <section class="dock-card dock-play mobile-panel-tools">
             <div class="dock-play-grid">
               <div class="dock-tools">
-                <span class="dock-label">Tools</span>
-                <div class="tool-bar" role="group" aria-label="Farm tools">
-                  <button type="button" id="tool-plant" class="tool-btn active" title="Plant seeds">
+                <span class="dock-label" data-i18n="tools.label">Tools</span>
+                <div class="tool-bar" role="group" data-i18n-aria-label="tools.ariaLabel">
+                  <button
+                    type="button"
+                    id="tool-plant"
+                    class="tool-btn active"
+                    data-i18n-title="tools.plant"
+                    title="Plant seeds"
+                  >
                     <span class="tool-icon">🌱</span>
-                    <span>Plant</span>
+                    <span data-i18n="tools.plant">Plant</span>
                   </button>
-                  <button type="button" id="tool-harvest" class="tool-btn" title="Harvest ripe crops">
+                  <button
+                    type="button"
+                    id="tool-harvest"
+                    class="tool-btn"
+                    data-i18n-title="tools.harvest"
+                    title="Harvest ripe crops"
+                  >
                     <span class="tool-icon">🧺</span>
-                    <span>Harvest</span>
+                    <span data-i18n="tools.harvest">Harvest</span>
                   </button>
-                  <button type="button" id="tool-place" class="tool-btn" title="Place animals and buildings">
+                  <button
+                    type="button"
+                    id="tool-place"
+                    class="tool-btn"
+                    data-i18n-title="tools.place"
+                    title="Place animals and buildings"
+                  >
                     <span class="tool-icon">📍</span>
-                    <span>Place</span>
+                    <span data-i18n="tools.place">Place</span>
                   </button>
-                  <button type="button" id="tool-pickup" class="tool-btn" title="Store back to inventory">
+                  <button
+                    type="button"
+                    id="tool-pickup"
+                    class="tool-btn"
+                    data-i18n-title="tools.store"
+                    title="Store back to inventory"
+                  >
                     <span class="tool-icon">📦</span>
-                    <span>Store</span>
+                    <span data-i18n="tools.store">Store</span>
                   </button>
-                  <button type="button" id="tool-pan" class="tool-btn" title="Pan the farm view">
+                  <button
+                    type="button"
+                    id="tool-pan"
+                    class="tool-btn"
+                    data-i18n-title="tools.move"
+                    title="Pan the farm view"
+                  >
                     <span class="tool-icon">🗺️</span>
-                    <span>Move</span>
+                    <span data-i18n="tools.move">Move</span>
                   </button>
                 </div>
               </div>
               <div class="dock-hand">
-                <span class="dock-label">In hand</span>
+                <span class="dock-label" data-i18n="tools.inHand">In hand</span>
                 <div id="hand-preview" class="hand-preview"></div>
                 <p id="hand-hint" class="hand-hint muted"></p>
               </div>
             </div>
           </section>
 
-          <section class="dock-card dock-inventory inventory-strip" aria-label="Barn and inventory">
+          <section class="dock-card dock-inventory inventory-strip mobile-panel-barn" aria-label="Barn and inventory">
             <div class="inventory-head">
-              <span class="dock-label">Barn &amp; inventory</span>
               <span id="storage-capacity" class="storage-chip muted"></span>
             </div>
-            <div class="inventory-filters" role="tablist" aria-label="Filter inventory">
-              <button type="button" class="inv-filter active" data-inv-filter="all">All</button>
-              <button type="button" class="inv-filter" data-inv-filter="crops">Crops</button>
-              <button type="button" class="inv-filter" data-inv-filter="animal">Animal</button>
-              <button type="button" class="inv-filter" data-inv-filter="factory">Factory</button>
-              <button type="button" class="inv-filter" data-inv-filter="build">Build</button>
+            <div class="inventory-filters" role="tablist" data-i18n-aria-label="inventory.filterAria">
+              <button type="button" class="inv-filter active" data-inv-filter="all" data-i18n="inventory.all">All</button>
+              <button type="button" class="inv-filter" data-inv-filter="crops" data-i18n="inventory.crops">Crops</button>
+              <button type="button" class="inv-filter" data-inv-filter="animal" data-i18n="inventory.animal">Animal</button>
+              <button type="button" class="inv-filter" data-inv-filter="factory" data-i18n="inventory.factory">
+                Factory
+              </button>
+              <button type="button" class="inv-filter" data-inv-filter="build" data-i18n="inventory.build">Build</button>
             </div>
             <div id="inventory-list" class="inventory-list"></div>
             <div class="barn-actions">
-              <button type="button" id="btn-collect-animals" class="barn-btn secondary">
+              <button type="button" id="btn-collect-animals" class="barn-btn secondary" data-i18n="hud.collectAnimals">
                 Collect all ready animals
               </button>
-              <button type="button" id="btn-collect-factories" class="barn-btn secondary">
+              <button type="button" id="btn-collect-factories" class="barn-btn secondary" data-i18n="hud.collectFactories">
                 Collect all ready factories
               </button>
-              <button type="button" id="btn-upgrade-barn" class="barn-btn primary" hidden>
+              <button type="button" id="btn-upgrade-barn" class="barn-btn primary" hidden data-i18n="hud.upgradeBarn">
                 Upgrade barn
               </button>
             </div>
           </section>
+        </aside>
 
+        <section class="shop-strip mobile-panel-market" aria-label="Market">
+          <div class="shop-strip-head">
+            <div class="shop-tabs" role="tablist" data-i18n-aria-label="shop.tabsAria">
+              <button type="button" class="shop-tab active" data-shop-tab="seeds" role="tab" data-i18n="shop.crops">
+                Crops
+              </button>
+              <button type="button" class="shop-tab" data-shop-tab="animals" role="tab" data-i18n="shop.animals">
+                Animals
+              </button>
+              <button type="button" class="shop-tab" data-shop-tab="factories" role="tab" data-i18n="shop.factories">
+                Factories
+              </button>
+              <button type="button" class="shop-tab" data-shop-tab="decorations" role="tab" data-i18n="shop.decor">
+                Decor
+              </button>
+              <button type="button" class="shop-tab" data-shop-tab="expansion" role="tab" data-i18n="shop.expand">
+                Expand
+              </button>
+            </div>
+          </div>
+          <div id="shop-cards" class="shop-row"></div>
+        </section>
+
+        <aside class="mobile-panel-settings" aria-label="Settings">
+          <div class="mobile-settings-actions">
+            <button type="button" id="btn-refresh-mobile" class="secondary full mobile-settings-btn" data-i18n="hud.sync">
+              Sync
+            </button>
+            <button type="button" id="btn-logout-mobile" class="secondary full mobile-settings-btn" data-i18n="hud.logout">
+              Log out
+            </button>
+          </div>
+        </aside>
+          </div>
         </aside>
 
         <div class="farm-column">
-          <section class="field-wrap" aria-label="Your farm">
-            <p id="farm-pan-hint" class="farm-pan-hint">
+          <section class="field-wrap" data-i18n-aria-label="farm.ariaLabel">
+            <p id="farm-pan-hint" class="farm-pan-hint" data-i18n="farm.panHint">
               Middle-click drag to pan · Move tool · two fingers on touch ·
               <kbd>+</kbd>/<kbd>−</kbd> zoom
             </p>
             <div class="farm-viewport">
-              <div class="zoom-controls" aria-label="Zoom">
-                <button type="button" id="btn-zoom-in" class="zoom-btn" title="Zoom in">+</button>
-                <button type="button" id="btn-zoom-out" class="zoom-btn" title="Zoom out">−</button>
+              <div class="zoom-controls" data-i18n-aria-label="farm.zoomAria">
+                <button type="button" id="btn-zoom-in" class="zoom-btn" data-i18n-title="farm.zoomIn" title="Zoom in">
+                  +
+                </button>
+                <button type="button" id="btn-zoom-out" class="zoom-btn" data-i18n-title="farm.zoomOut" title="Zoom out">
+                  −
+                </button>
               </div>
               <div id="game-container" class="game-shell"></div>
             </div>
-          </section>
-
-          <section class="shop-strip" aria-label="Market">
-            <div class="shop-strip-head">
-              <div class="shop-tabs" role="tablist">
-                <button type="button" class="shop-tab active" data-shop-tab="seeds" role="tab">Crops</button>
-                <button type="button" class="shop-tab" data-shop-tab="animals" role="tab">Animals</button>
-                <button type="button" class="shop-tab" data-shop-tab="factories" role="tab">Factories</button>
-                <button type="button" class="shop-tab" data-shop-tab="decorations" role="tab">Decor</button>
-                <button type="button" class="shop-tab" data-shop-tab="expansion" role="tab">Expand</button>
-              </div>
-            </div>
-            <div id="shop-cards" class="shop-row"></div>
           </section>
         </div>
       </main>
@@ -296,14 +450,14 @@
       >
         <header class="farm-modal-header">
           <span id="farm-modal-emoji" class="farm-modal-emoji" aria-hidden="true">🌾</span>
-          <h2 id="farm-modal-title" class="farm-modal-title">Confirm</h2>
+          <h2 id="farm-modal-title" class="farm-modal-title" data-i18n="modal.confirm">Confirm</h2>
         </header>
         <p id="farm-modal-message" class="farm-modal-message"></p>
         <ul id="farm-modal-details" class="farm-modal-details" hidden></ul>
         <div id="farm-modal-batch" class="farm-modal-batch" hidden></div>
         <footer class="farm-modal-actions">
-          <button type="button" id="farm-modal-cancel" class="farm-modal-cancel">Cancel</button>
-          <button type="button" id="farm-modal-confirm" class="farm-modal-confirm">Confirm</button>
+          <button type="button" id="farm-modal-cancel" class="farm-modal-cancel" data-i18n="modal.cancel">Cancel</button>
+          <button type="button" id="farm-modal-confirm" class="farm-modal-confirm" data-i18n="modal.confirm">Confirm</button>
         </footer>
       </div>
     </div>

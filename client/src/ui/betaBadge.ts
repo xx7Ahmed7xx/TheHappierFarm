@@ -4,7 +4,7 @@ import type { ClientPresentationState, FarmSnapshot } from '../types';
 let badgeEl: HTMLDivElement | null = null;
 
 function badgeHost(): HTMLElement {
-  return document.querySelector<HTMLElement>('.hud-brand') ?? document.body;
+  return document.querySelector<HTMLElement>('#app') ?? document.body;
 }
 
 function ensureBadgeElement(): HTMLDivElement {
@@ -17,7 +17,7 @@ function ensureBadgeElement(): HTMLDivElement {
     badgeEl.hidden = true;
   }
   if (badgeEl.parentElement !== host) {
-    host.prepend(badgeEl);
+    host.append(badgeEl);
   }
   return badgeEl;
 }

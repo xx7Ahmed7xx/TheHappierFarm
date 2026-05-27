@@ -97,8 +97,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 1,
                             BuyPrice = 250,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "بقرة هولشتاين سعيدة",
+                            DisplayNameEn = "Happy Holstein",
                             FeedQuantity = 2,
                             FeedResourceCode = "wheat",
                             FootprintHeight = 1,
@@ -115,8 +115,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 2,
                             BuyPrice = 200,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "خروف صوفي",
+                            DisplayNameEn = "Woolly Sheep",
                             FeedQuantity = 2,
                             FeedResourceCode = "barley",
                             FootprintHeight = 1,
@@ -133,8 +133,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 3,
                             BuyPrice = 60,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "دجاجة بياض",
+                            DisplayNameEn = "Clucking Hen",
                             FeedQuantity = 1,
                             FeedResourceCode = "carrot",
                             FootprintHeight = 1,
@@ -261,8 +261,8 @@ namespace HappierFarm.Infrastructure.Migrations
                             Id = 1,
                             BaseYield = 1,
                             BuyPrice = 8,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "شعير مشمس",
+                            DisplayNameEn = "Sunny Barley",
                             GrowthDurationSeconds = 1800,
                             HarvestResourceCode = "barley",
                             MinLevelRequired = 1,
@@ -275,8 +275,8 @@ namespace HappierFarm.Infrastructure.Migrations
                             Id = 2,
                             BaseYield = 1,
                             BuyPrice = 15,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "جزر سريع",
+                            DisplayNameEn = "Swift Carrot",
                             GrowthDurationSeconds = 2700,
                             HarvestResourceCode = "carrot",
                             MinLevelRequired = 2,
@@ -289,8 +289,8 @@ namespace HappierFarm.Infrastructure.Migrations
                             Id = 3,
                             BaseYield = 1,
                             BuyPrice = 12,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "قمح ذهبي",
+                            DisplayNameEn = "Golden Wheat",
                             GrowthDurationSeconds = 2400,
                             HarvestResourceCode = "wheat",
                             MinLevelRequired = 2,
@@ -303,8 +303,8 @@ namespace HappierFarm.Infrastructure.Migrations
                             Id = 4,
                             BaseYield = 1,
                             BuyPrice = 30,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "طماطم متسلقة",
+                            DisplayNameEn = "Vine Tomato",
                             GrowthDurationSeconds = 7200,
                             HarvestResourceCode = "tomato",
                             MinLevelRequired = 4,
@@ -317,8 +317,8 @@ namespace HappierFarm.Infrastructure.Migrations
                             Id = 5,
                             BaseYield = 1,
                             BuyPrice = 45,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "يقطين خريفي",
+                            DisplayNameEn = "Autumn Pumpkin",
                             GrowthDurationSeconds = 14400,
                             HarvestResourceCode = "pumpkin",
                             MinLevelRequired = 6,
@@ -375,8 +375,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 1,
                             BuyPrice = 35,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "بستان عباد الشمس",
+                            DisplayNameEn = "Sunflower Patch",
                             FootprintHeight = 1,
                             FootprintWidth = 1,
                             MaxOwned = 30,
@@ -388,8 +388,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 2,
                             BuyPrice = 60,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "سياج خشبي",
+                            DisplayNameEn = "Wooden Fence",
                             FootprintHeight = 1,
                             FootprintWidth = 2,
                             MaxOwned = 20,
@@ -401,8 +401,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 3,
                             BuyPrice = 45,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "بالة قش مريحة",
+                            DisplayNameEn = "Cozy Hay Bale",
                             FootprintHeight = 1,
                             FootprintWidth = 1,
                             MaxOwned = 30,
@@ -491,8 +491,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 1,
                             BuyPrice = 220,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "مكبس جبن المرج",
+                            DisplayNameEn = "Meadow Cheese Press",
                             FootprintHeight = 2,
                             FootprintWidth = 2,
                             InputQuantity = 3,
@@ -511,8 +511,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 3,
                             BuyPrice = 200,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "غزّالة الصوف",
+                            DisplayNameEn = "Wool Spinner",
                             FootprintHeight = 2,
                             FootprintWidth = 2,
                             InputQuantity = 2,
@@ -531,8 +531,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 4,
                             BuyPrice = 280,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "مخبز القرية",
+                            DisplayNameEn = "Village Bakery",
                             FootprintHeight = 2,
                             FootprintWidth = 2,
                             InputQuantity = 3,
@@ -551,8 +551,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Id = 2,
                             BuyPrice = 350,
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "حظيرة تخزين",
+                            DisplayNameEn = "Hearty Barn",
                             FootprintHeight = 2,
                             FootprintWidth = 2,
                             InputQuantity = 0,
@@ -896,8 +896,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "barley",
                             Category = "crop",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "شعير",
+                            DisplayNameEn = "Barley",
                             IsEnabled = true,
                             SellValue = 28,
                             SortOrder = 10
@@ -906,8 +906,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "carrot",
                             Category = "crop",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "جزر",
+                            DisplayNameEn = "Carrot",
                             IsEnabled = true,
                             SellValue = 55,
                             SortOrder = 20
@@ -916,8 +916,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "wheat",
                             Category = "crop",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "قمح",
+                            DisplayNameEn = "Wheat",
                             IsEnabled = true,
                             SellValue = 38,
                             SortOrder = 30
@@ -926,8 +926,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "tomato",
                             Category = "crop",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "طماطم",
+                            DisplayNameEn = "Tomato",
                             IsEnabled = true,
                             SellValue = 72,
                             SortOrder = 40
@@ -936,8 +936,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "pumpkin",
                             Category = "crop",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "يقطين",
+                            DisplayNameEn = "Pumpkin",
                             IsEnabled = true,
                             SellValue = 120,
                             SortOrder = 50
@@ -946,8 +946,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "milk",
                             Category = "animal_product",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "حليب",
+                            DisplayNameEn = "Milk",
                             IsEnabled = true,
                             SellValue = 12,
                             SortOrder = 60
@@ -956,8 +956,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "egg",
                             Category = "animal_product",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "بيض",
+                            DisplayNameEn = "Egg",
                             IsEnabled = true,
                             SellValue = 8,
                             SortOrder = 70
@@ -966,8 +966,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "wool",
                             Category = "animal_product",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "صوف",
+                            DisplayNameEn = "Wool",
                             IsEnabled = true,
                             SellValue = 18,
                             SortOrder = 80
@@ -976,8 +976,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "cheese",
                             Category = "factory_product",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "جبن",
+                            DisplayNameEn = "Cheese",
                             IsEnabled = true,
                             SellValue = 80,
                             SortOrder = 90
@@ -986,8 +986,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "yarn",
                             Category = "factory_product",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "غزل",
+                            DisplayNameEn = "Yarn",
                             IsEnabled = true,
                             SellValue = 45,
                             SortOrder = 100
@@ -996,8 +996,8 @@ namespace HappierFarm.Infrastructure.Migrations
                         {
                             Code = "bread",
                             Category = "factory_product",
-                            DisplayNameAr = "",
-                            DisplayNameEn = "",
+                            DisplayNameAr = "خبز",
+                            DisplayNameEn = "Bread",
                             IsEnabled = true,
                             SellValue = 55,
                             SortOrder = 110

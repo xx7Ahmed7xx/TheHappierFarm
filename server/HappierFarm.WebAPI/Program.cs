@@ -128,13 +128,21 @@ if (corsOrigins is null || corsOrigins.Length == 0)
     corsOrigins = new[] { "http://localhost:5173", "http://127.0.0.1:5173" };
 }
 
-builder.Services.AddCors(options => options.AddPolicy("DevClient", policy =>
+const string corsPolicyName = "ClientCors";
+builder.Services.AddCors(options => options.AddPolicy(corsPolicyName, policy =>
     policy.WithOrigins(corsOrigins)
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials()));
 
 var app = builder.Build();
+
+var startupLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
+startupLogger.LogInformation(
+    "Environment={Environment} Cors:AllowedOrigins=[{Origins}] AllowedHosts={AllowedHosts}",
+    app.Environment.EnvironmentName,
+    string.Join(", ", corsOrigins),
+    builder.Configuration["AllowedHosts"] ?? "(not set)");
 
 if (app.Environment.IsDevelopment())
 {
@@ -181,7 +189,7 @@ static async Task ApplyPendingMigrationsAsync(WebApplication app)
     }
 }
 
-app.UseCors("DevClient");
+app.UseCors(corsPolicyName);
 
 if (!app.Environment.IsDevelopment())
 {
@@ -191,7 +199,15 @@ if (!app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapHub<FarmHub>("/hubs/game");
+app.MapGet("/api/health", () => Results.Ok(new
+{
+    environment = app.Environment.EnvironmentName,
+    corsAllowedOrigins = corsOrigins,
+}))
+    .AllowAnonymous()
+    .RequireCors(corsPolicyName);
+
+app.MapHub<FarmHub>("/hubs/game").RequireCors(corsPolicyName);
 app.MapAuthEndpoints();
 app.MapFarmEndpoints();
 

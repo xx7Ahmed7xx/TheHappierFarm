@@ -4,6 +4,8 @@ All schema changes go through **EF Core migrations** in `server/HappierFarm.Infr
 
 **Baseline (2026-05-26):** history was squashed to a single migration, `20260526122202_InitialSchema`. Every environment must **drop and recreate** (or use a new empty database) once when moving to this baseline — there is no upgrade path from the old multi-migration chain.
 
+**Catalog Arabic names (2026-05-27):** `20260527081901_SeedArabicCatalogDisplayNames` updates `DisplayNameEn` / `DisplayNameAr` on all seeded crops, animals, factories, decorations, and resources. Safe to apply on existing local and VPS databases (data-only `UpdateData`).
+
 ---
 
 ## Rules (avoid publish / ordering bugs)

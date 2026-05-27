@@ -270,7 +270,23 @@ function renderInventory(snap: FarmSnapshot): void {
     (cfg?.baseStorageCapacity ?? 50) + Math.max(0, snap.level - 1) * (cfg?.storagePerLevel ?? 10);
   const barnBonus = Math.max(0, capacity - baseCap);
   const barnTier = snap.barnUpgradeTier ?? 0;
-  storageCapacityEl.textContent = `${t('inventory.title')} ${usedSlots}/${capacity}${full ? ` ${t('hud.barnFull')}` : ''} · ${t('hud.level')} ${snap.level} +10${barnBonus > 0 ? ` · ${t('hud.barnUpgrades')} +${barnBonus}` : ''} · ${snap.gridSize}×${snap.gridSize}`;
+  const perLevel = cfg?.storagePerLevel ?? 10;
+  const barnSuffix =
+    barnBonus > 0 ? t('inventory.barnSlotsBonus', { bonus: barnBonus }) : '';
+  storageCapacityEl.innerHTML = `
+    <span class="storage-line storage-line--primary">${t('inventory.storageUsed', {
+      used: usedSlots,
+      capacity,
+      fullSuffix: full ? ` · ${t('hud.barnFull')}` : '',
+    })}</span>
+    <span class="storage-line storage-line--detail">${t('inventory.storageDetail', {
+      level: snap.level,
+      baseCap,
+      perLevel,
+      barnSuffix,
+      grid: snap.gridSize,
+    })}</span>
+  `;
 
   const offer = snap.nextBarnUpgrade;
   const canUpgrade =
@@ -354,6 +370,10 @@ function renderInventory(snap: FarmSnapshot): void {
   }
 }
 
+function shopGoldLabel(price: number, perTile = false): string {
+  return perTile ? t('shop.goldPerTile', { price }) : t('shop.goldPrice', { price });
+}
+
 function renderShopCards(snap: FarmSnapshot): void {
   shopCardsEl.innerHTML = '';
 
@@ -372,8 +392,12 @@ function renderShopCards(snap: FarmSnapshot): void {
             price: crop.buyPrice,
             sell: crop.sellValue,
           }),
-          `${crop.buyPrice}g/tile`,
-          equipped ? t('shop.equipped') : unlocked ? t('shop.equip') : t('shop.lv', { n: crop.minLevelRequired ?? 1 }),
+          shopGoldLabel(crop.buyPrice, true),
+          equipped
+            ? t('shop.equipped')
+            : unlocked
+              ? t('shop.equip')
+              : t('shop.requiresLevel', { n: crop.minLevelRequired ?? 1 }),
           afford || equipped,
           unlocked,
           crop.minLevelRequired ?? 1,
@@ -419,9 +443,9 @@ function renderShopCards(snap: FarmSnapshot): void {
             placed,
             maxPlaced: animal.maxPlaced,
           }),
-          `${animal.buyPrice}g`,
+          shopGoldLabel(animal.buyPrice),
           !unlocked
-            ? t('shop.lv', { n: animal.minLevelRequired ?? 1 })
+            ? t('shop.requiresLevel', { n: animal.minLevelRequired ?? 1 })
             : atCap
               ? t('shop.atCap')
               : t('shop.buyStash'),
@@ -450,9 +474,9 @@ function renderShopCards(snap: FarmSnapshot): void {
           decorationEmoji(deco.id),
           catalogDecorationName(deco.id, deco.name, deco),
           `${deco.footprintWidth}×${deco.footprintHeight} · ${total}/${deco.maxOwned} · ${placed}/${deco.maxPlaced}`,
-          `${deco.buyPrice}g`,
+          shopGoldLabel(deco.buyPrice),
           !unlocked
-            ? t('shop.lv', { n: deco.minLevelRequired ?? 1 })
+            ? t('shop.requiresLevel', { n: deco.minLevelRequired ?? 1 })
             : atCap
               ? t('shop.atCap')
               : t('shop.buyStash'),
@@ -481,7 +505,7 @@ function renderShopCards(snap: FarmSnapshot): void {
         '🌾',
         t('shop.expandTitle', { size: offer.nextSize }),
         t('shop.expandMeta', { tiles: added }),
-        `${offer.price}g`,
+        shopGoldLabel(offer.price),
         t('shop.buyLand'),
         afford,
         true,
@@ -508,9 +532,9 @@ function renderShopCards(snap: FarmSnapshot): void {
           factoryEmoji(factory.id, true),
           catalogFactoryName(factory.id, factory.name, factory),
           t('shop.barnMeta', { level: snap.level, tier }),
-          `${factory.buyPrice}g`,
+          shopGoldLabel(factory.buyPrice),
           !unlocked
-            ? t('shop.lv', { n: factory.minLevelRequired ?? 1 })
+            ? t('shop.requiresLevel', { n: factory.minLevelRequired ?? 1 })
             : atCap
               ? t('shop.placed')
               : t('shop.buyStash'),
@@ -546,9 +570,9 @@ function renderShopCards(snap: FarmSnapshot): void {
           owned: total,
           max: factory.maxOwned,
         }),
-        `${factory.buyPrice}g`,
+        shopGoldLabel(factory.buyPrice),
         !unlocked
-          ? t('shop.lv', { n: factory.minLevelRequired ?? 1 })
+          ? t('shop.requiresLevel', { n: factory.minLevelRequired ?? 1 })
           : atCap
             ? t('shop.atCap')
             : t('shop.buyStash'),
@@ -580,16 +604,19 @@ function makeShopCard(
   card.className = `shop-card${unlocked ? '' : ' locked'}${afford ? '' : ' cant-afford'}`;
   card.style.setProperty('--accent', accent);
   card.style.setProperty('--accent-dark', accentDark);
+  const metaText = unlocked ? meta : `${meta} · ${t('shop.locked')}`;
   card.innerHTML = `
     <div class="shop-card-body">
       <span class="shop-card-emoji">${emoji}</span>
       <div class="shop-card-info">
         <h4 class="shop-card-title">${title}</h4>
-        <p class="shop-card-meta">${meta}</p>
+        <p class="shop-card-meta">${metaText}</p>
       </div>
-      <span class="shop-price">${price}</span>
     </div>
-    <button type="button" class="shop-buy-btn" ${afford && unlocked ? '' : 'disabled'}>${buyLabel}</button>
+    <div class="shop-card-footer">
+      <span class="shop-price">${price}</span>
+      <button type="button" class="shop-buy-btn" ${afford && unlocked ? '' : 'disabled'}>${buyLabel}</button>
+    </div>
   `;
   card.querySelector<HTMLButtonElement>('.shop-buy-btn')!.addEventListener('click', (e) => {
     e.stopPropagation();

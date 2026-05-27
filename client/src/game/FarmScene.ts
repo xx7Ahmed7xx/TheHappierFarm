@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { formatDuration, t } from '../i18n';
+import { formatGameTimer } from '../i18n';
 import type { FarmSnapshot, FarmTileDto } from '../types';
 import {
   computeCropSecondsRemaining,
@@ -139,7 +139,7 @@ function formatCropTimerLabel(seconds: number | null | undefined): string {
   if (seconds === null || seconds === undefined || seconds <= 0) {
     return '';
   }
-  return t('game.timerLeft', { time: formatDuration(seconds) });
+  return formatGameTimer(seconds);
 }
 
 /**
@@ -728,7 +728,7 @@ export class FarmScene extends Phaser.Scene {
         if (this.isInputSuspended()) {
           return;
         }
-        event.preventDefault();
+        event?.preventDefault?.();
         const delta = dy > 0 ? -0.08 : 0.08;
         const focus = clientToCameraPoint(this, event.clientX, event.clientY);
         this.adjustZoom(delta, focus.x, focus.y);

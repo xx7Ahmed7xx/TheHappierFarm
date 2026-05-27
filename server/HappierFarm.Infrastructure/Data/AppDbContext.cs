@@ -74,17 +74,105 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
             e.Property(r => r.DisplayNameAr).HasMaxLength(64).IsRequired();
             e.Property(r => r.IsEnabled).HasDefaultValue(true);
             e.HasData(
-                new ResourceDefinition { Code = "barley", SellValue = 28, Category = "crop", SortOrder = 10 },
-                new ResourceDefinition { Code = "carrot", SellValue = 55, Category = "crop", SortOrder = 20 },
-                new ResourceDefinition { Code = "wheat", SellValue = 38, Category = "crop", SortOrder = 30 },
-                new ResourceDefinition { Code = "tomato", SellValue = 72, Category = "crop", SortOrder = 40 },
-                new ResourceDefinition { Code = "pumpkin", SellValue = 120, Category = "crop", SortOrder = 50 },
-                new ResourceDefinition { Code = "milk", SellValue = 12, Category = "animal_product", SortOrder = 60 },
-                new ResourceDefinition { Code = "egg", SellValue = 8, Category = "animal_product", SortOrder = 70 },
-                new ResourceDefinition { Code = "wool", SellValue = 18, Category = "animal_product", SortOrder = 80 },
-                new ResourceDefinition { Code = "cheese", SellValue = 80, Category = "factory_product", SortOrder = 90 },
-                new ResourceDefinition { Code = "yarn", SellValue = 45, Category = "factory_product", SortOrder = 100 },
-                new ResourceDefinition { Code = "bread", SellValue = 55, Category = "factory_product", SortOrder = 110 });
+                new ResourceDefinition
+                {
+                    Code = "barley",
+                    SellValue = 28,
+                    Category = "crop",
+                    SortOrder = 10,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.BarleyEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.BarleyAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "carrot",
+                    SellValue = 55,
+                    Category = "crop",
+                    SortOrder = 20,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.CarrotEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.CarrotAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "wheat",
+                    SellValue = 38,
+                    Category = "crop",
+                    SortOrder = 30,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.WheatEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.WheatAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "tomato",
+                    SellValue = 72,
+                    Category = "crop",
+                    SortOrder = 40,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.TomatoEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.TomatoAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "pumpkin",
+                    SellValue = 120,
+                    Category = "crop",
+                    SortOrder = 50,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.PumpkinEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.PumpkinAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "milk",
+                    SellValue = 12,
+                    Category = "animal_product",
+                    SortOrder = 60,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.MilkEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.MilkAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "egg",
+                    SellValue = 8,
+                    Category = "animal_product",
+                    SortOrder = 70,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.EggEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.EggAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "wool",
+                    SellValue = 18,
+                    Category = "animal_product",
+                    SortOrder = 80,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.WoolEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.WoolAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "cheese",
+                    SellValue = 80,
+                    Category = "factory_product",
+                    SortOrder = 90,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.CheeseEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.CheeseAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "yarn",
+                    SellValue = 45,
+                    Category = "factory_product",
+                    SortOrder = 100,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.YarnEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.YarnAr,
+                },
+                new ResourceDefinition
+                {
+                    Code = "bread",
+                    SellValue = 55,
+                    Category = "factory_product",
+                    SortOrder = 110,
+                    DisplayNameEn = CatalogSeedDisplayNames.Resources.BreadEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Resources.BreadAr,
+                });
         });
 
         modelBuilder.Entity<CropDefinition>(e =>
@@ -100,6 +188,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 1,
                     Name = "Sunny Barley",
+                    DisplayNameEn = CatalogSeedDisplayNames.Crops.BarleyEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Crops.BarleyAr,
                     BuyPrice = 8,
                     SellValue = 18,
                     BaseYield = 1,
@@ -112,6 +202,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 2,
                     Name = "Swift Carrot",
+                    DisplayNameEn = CatalogSeedDisplayNames.Crops.CarrotEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Crops.CarrotAr,
                     BuyPrice = 15,
                     SellValue = 35,
                     BaseYield = 1,
@@ -124,6 +216,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 3,
                     Name = "Golden Wheat",
+                    DisplayNameEn = CatalogSeedDisplayNames.Crops.WheatEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Crops.WheatAr,
                     BuyPrice = 12,
                     SellValue = 28,
                     BaseYield = 1,
@@ -136,6 +230,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 4,
                     Name = "Vine Tomato",
+                    DisplayNameEn = CatalogSeedDisplayNames.Crops.TomatoEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Crops.TomatoAr,
                     BuyPrice = 30,
                     SellValue = 65,
                     BaseYield = 1,
@@ -148,6 +244,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 5,
                     Name = "Autumn Pumpkin",
+                    DisplayNameEn = CatalogSeedDisplayNames.Crops.PumpkinEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Crops.PumpkinAr,
                     BuyPrice = 45,
                     SellValue = 110,
                     BaseYield = 1,
@@ -205,6 +303,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 1,
                     Name = "Happy Holstein",
+                    DisplayNameEn = CatalogSeedDisplayNames.Animals.CowEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Animals.CowAr,
                     BuyPrice = 250,
                     ProductionIntervalSeconds = 2700,
                     FeedResourceCode = "wheat",
@@ -221,6 +321,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 2,
                     Name = "Woolly Sheep",
+                    DisplayNameEn = CatalogSeedDisplayNames.Animals.SheepEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Animals.SheepAr,
                     BuyPrice = 200,
                     ProductionIntervalSeconds = 3600,
                     FeedResourceCode = "barley",
@@ -237,6 +339,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 3,
                     Name = "Clucking Hen",
+                    DisplayNameEn = CatalogSeedDisplayNames.Animals.HenEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Animals.HenAr,
                     BuyPrice = 60,
                     ProductionIntervalSeconds = 1200,
                     FeedResourceCode = "carrot",
@@ -267,6 +371,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 1,
                     Name = "Meadow Cheese Press",
+                    DisplayNameEn = CatalogSeedDisplayNames.Factories.CheeseEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Factories.CheeseAr,
                     BuyPrice = 220,
                     InputResourceCode = "milk",
                     InputQuantity = 3,
@@ -285,6 +391,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 3,
                     Name = "Wool Spinner",
+                    DisplayNameEn = CatalogSeedDisplayNames.Factories.SpinnerEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Factories.SpinnerAr,
                     BuyPrice = 200,
                     InputResourceCode = "wool",
                     InputQuantity = 2,
@@ -303,6 +411,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 4,
                     Name = "Village Bakery",
+                    DisplayNameEn = CatalogSeedDisplayNames.Factories.BakeryEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Factories.BakeryAr,
                     BuyPrice = 280,
                     InputResourceCode = "wheat",
                     InputQuantity = 3,
@@ -321,6 +431,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 2,
                     Name = "Hearty Barn",
+                    DisplayNameEn = CatalogSeedDisplayNames.Factories.BarnEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Factories.BarnAr,
                     BuyPrice = 350,
                     InputResourceCode = "none",
                     InputQuantity = 0,
@@ -404,6 +516,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 1,
                     Name = "Sunflower Patch",
+                    DisplayNameEn = CatalogSeedDisplayNames.Decorations.SunflowerEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Decorations.SunflowerAr,
                     BuyPrice = 35,
                     FootprintWidth = 1,
                     FootprintHeight = 1,
@@ -415,6 +529,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 2,
                     Name = "Wooden Fence",
+                    DisplayNameEn = CatalogSeedDisplayNames.Decorations.FenceEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Decorations.FenceAr,
                     BuyPrice = 60,
                     FootprintWidth = 2,
                     FootprintHeight = 1,
@@ -426,6 +542,8 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                 {
                     Id = 3,
                     Name = "Cozy Hay Bale",
+                    DisplayNameEn = CatalogSeedDisplayNames.Decorations.HayEn,
+                    DisplayNameAr = CatalogSeedDisplayNames.Decorations.HayAr,
                     BuyPrice = 45,
                     FootprintWidth = 1,
                     FootprintHeight = 1,

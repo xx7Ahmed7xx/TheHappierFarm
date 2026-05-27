@@ -2,7 +2,9 @@ import { isBgmEnabled, setBgmEnabled } from '../audio';
 import { applyBetaBadge } from '../ui/betaBadge';
 import { getHudSnapshot } from '../ui/gameHud';
 import { refreshBootLocale } from '../ui/bootLoader';
+import { syncMobileMenuLocale } from '../ui/mobileMenu';
 import { getLocale, onLocaleChange, setLocale, t } from './core';
+import { bindFormValidation } from './formValidation';
 import type { Locale } from './types';
 
 function setText(sel: string, key: string, params?: Record<string, string | number>): void {
@@ -12,20 +14,56 @@ function setText(sel: string, key: string, params?: Record<string, string | numb
   });
 }
 
+function setPlaceholders(): void {
+  document.querySelectorAll<HTMLElement>('[data-i18n-placeholder]').forEach((el) => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (!key) {
+      return;
+    }
+    if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+      el.placeholder = t(key);
+    }
+  });
+}
+
+function setTitles(): void {
+  document.querySelectorAll<HTMLElement>('[data-i18n-title]').forEach((el) => {
+    const key = el.getAttribute('data-i18n-title');
+    if (key) {
+      el.title = t(key);
+    }
+  });
+}
+
+function setAriaLabels(): void {
+  document.querySelectorAll<HTMLElement>('[data-i18n-aria-label]').forEach((el) => {
+    const key = el.getAttribute('data-i18n-aria-label');
+    if (key) {
+      el.setAttribute('aria-label', t(key));
+    }
+  });
+}
+
 function setLabelText(forId: string, key: string): void {
   const input = document.querySelector<HTMLInputElement>(`#${forId}`);
   if (!input) {
     return;
   }
   const label = input.closest('label');
-  if (label) {
-    const text = t(key);
-    const child = label.firstChild;
-    if (child?.nodeType === Node.TEXT_NODE) {
-      child.textContent = `${text} `;
-    } else {
-      label.insertBefore(document.createTextNode(`${text} `), input);
-    }
+  if (!label) {
+    return;
+  }
+  const span = label.querySelector('[data-i18n]');
+  if (span) {
+    span.textContent = t(key);
+    return;
+  }
+  const text = t(key);
+  const child = label.firstChild;
+  if (child?.nodeType === Node.TEXT_NODE) {
+    child.textContent = `${text} `;
+  } else {
+    label.insertBefore(document.createTextNode(`${text} `), input);
   }
 }
 
@@ -38,7 +76,6 @@ function langSwitcherHost(placement: LangSwitcherPlacement): HTMLElement {
   return document.body;
 }
 
-/** Language toggle on auth/boot (overlay) and in the in-game header bar. */
 function ensureGlobalLangSwitcher(): void {
   let wrap = document.querySelector<HTMLDivElement>('#site-lang-switcher');
   if (!wrap) {
@@ -91,8 +128,7 @@ export function setLangSwitcherPlacement(placement: LangSwitcherPlacement): void
   ensureGlobalLangSwitcher();
   const wrap = document.querySelector<HTMLDivElement>('#site-lang-switcher')!;
   const host = langSwitcherHost(placement);
-  const before =
-    placement === 'hud' ? host.querySelector('#btn-refresh') : null;
+  const before = placement === 'hud' ? host.querySelector('#btn-refresh') : null;
 
   wrap.classList.remove('site-lang-switcher--overlay', 'site-lang-switcher--hud');
   wrap.classList.add(
@@ -138,6 +174,9 @@ function refreshLangButtons(): void {
 }
 
 export function applyStaticDomLocale(): void {
+  document.documentElement.lang = getLocale();
+  document.documentElement.dir = getLocale() === 'ar' ? 'rtl' : 'ltr';
+
   document.title = t('brand.gameName');
   setText('.auth-game-name, .boot-game-name, .hud-game-title', 'brand.gameName');
   setText('#page-login .auth-title', 'auth.loginTitle');
@@ -153,40 +192,21 @@ export function applyStaticDomLocale(): void {
   setText('#btn-register', 'auth.registerBtn');
   setText('#go-register', 'auth.createAccount');
   setText('#go-login', 'auth.goLogin');
-  const loginSwitch = document.querySelector('#page-login .auth-switch');
-  if (loginSwitch) {
-    loginSwitch.childNodes[0].textContent = `${t('auth.newHere')} `;
-  }
-  const regSwitch = document.querySelector('#page-register .auth-switch');
-  if (regSwitch) {
-    regSwitch.childNodes[0].textContent = `${t('auth.haveAccount')} `;
-  }
+  setText('#page-login .auth-switch > span', 'auth.newHere');
+  setText('#page-register .auth-switch > span', 'auth.haveAccount');
 
-  setText('.dock-tools .dock-label', 'tools.label');
-  setText('#tool-plant span:last-child', 'tools.plant');
-  setText('#tool-harvest span:last-child', 'tools.harvest');
-  setText('#tool-place span:last-child', 'tools.place');
-  setText('#tool-pickup span:last-child', 'tools.store');
-  setText('#tool-pan span:last-child', 'tools.move');
-  setText('.dock-hand .dock-label', 'tools.inHand');
-  setText('.dock-inventory .dock-label', 'inventory.title');
-  setText('.inv-filter[data-inv-filter="all"]', 'inventory.all');
-  setText('.inv-filter[data-inv-filter="crops"]', 'inventory.crops');
-  setText('.inv-filter[data-inv-filter="animal"]', 'inventory.animal');
-  setText('.inv-filter[data-inv-filter="factory"]', 'inventory.factory');
-  setText('.inv-filter[data-inv-filter="build"]', 'inventory.build');
+  setText('#btn-refresh, #btn-refresh-mobile', 'hud.sync');
+  setText('#btn-logout, #btn-logout-mobile', 'hud.logout');
   setText('#btn-collect-animals', 'hud.collectAnimals');
   setText('#btn-collect-factories', 'hud.collectFactories');
+  setText('#btn-upgrade-barn', 'hud.upgradeBarn');
   setText('#farm-pan-hint', 'farm.panHint');
-  setText('.shop-tab[data-shop-tab="seeds"]', 'shop.crops');
-  setText('.shop-tab[data-shop-tab="animals"]', 'shop.animals');
-  setText('.shop-tab[data-shop-tab="factories"]', 'shop.factories');
-  setText('.shop-tab[data-shop-tab="decorations"]', 'shop.decor');
-  setText('.shop-tab[data-shop-tab="expansion"]', 'shop.expand');
-  refreshMusicButton();
-  setText('#btn-refresh', 'hud.sync');
-  setText('#btn-logout', 'hud.logout');
   setText('#farm-modal-cancel', 'modal.cancel');
+  setText('#farm-modal-confirm', 'modal.confirm');
+
+  setPlaceholders();
+  setTitles();
+  setAriaLabels();
 
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     const key = el.getAttribute('data-i18n');
@@ -195,16 +215,21 @@ export function applyStaticDomLocale(): void {
     }
   });
 
+  const drawerClose = document.querySelector<HTMLButtonElement>('#mobile-drawer-close');
+  if (drawerClose) {
+    drawerClose.setAttribute('aria-label', t('mobile.close'));
+  }
+
   ensureGlobalLangSwitcher();
   refreshBootLocale();
+  syncMobileMenuLocale();
 }
 
 export function bindDomLocale(): void {
   applyStaticDomLocale();
+  bindFormValidation();
   setLangSwitcherPlacement(
-    document.querySelector<HTMLDivElement>('#app')?.hidden === false
-      ? 'hud'
-      : 'overlay',
+    document.querySelector<HTMLDivElement>('#app')?.hidden === false ? 'hud' : 'overlay',
   );
   onLocaleChange(() => {
     applyStaticDomLocale();

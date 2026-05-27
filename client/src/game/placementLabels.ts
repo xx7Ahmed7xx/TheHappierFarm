@@ -1,4 +1,4 @@
-import { formatDuration, t } from '../i18n';
+import { formatGameTimer, t } from '../i18n';
 import { catalogResourceName } from '../i18n/catalogNames';
 import type { FarmSnapshot, FarmTileDto } from '../types';
 import { computePlacementSecondsRemaining } from '../growth';
@@ -73,7 +73,7 @@ export function placementTimerLabel(
       return t('game.factoryReadyStart');
     }
     if (state === 'working' && remaining != null && remaining > 0) {
-      return t('game.timerLeft', { time: formatDuration(remaining) });
+      return formatGameTimer(remaining);
     }
     if (state === 'done') {
       return t('game.factoryWorkDone');
@@ -97,7 +97,7 @@ export function placementTimerLabel(
       return t('game.animalNeedsFeedShort');
     }
     if (remaining != null && remaining > 0) {
-      return t('game.timerLeft', { time: formatDuration(remaining) });
+      return formatGameTimer(remaining);
     }
     const interval = tile.placementCooldownSeconds ?? 90;
     const cap = snap ? maxBankedAnimalCycles(snap) : 30;
