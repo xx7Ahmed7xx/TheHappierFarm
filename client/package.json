@@ -6,9 +6,10 @@
   "scripts": {
     "farm-sprites:copy": "node scripts/copy-farm-sprites.mjs",
     "brand:sync": "node scripts/sync-brand-logo.mjs",
+    "brand:images": "node scripts/generate-brand-images.mjs",
     "brand:logo": "node scripts/knockout-logo-bg.mjs",
-    "predev": "node scripts/copy-farm-sprites.mjs && node scripts/sync-brand-logo.mjs",
-    "prebuild": "node scripts/copy-farm-sprites.mjs && node scripts/sync-brand-logo.mjs",
+    "predev": "node scripts/copy-farm-sprites.mjs && node scripts/sync-brand-logo.mjs && node scripts/generate-brand-images.mjs",
+    "prebuild": "node scripts/copy-farm-sprites.mjs && node scripts/sync-brand-logo.mjs && node scripts/generate-brand-images.mjs",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
