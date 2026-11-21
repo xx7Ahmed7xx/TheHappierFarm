@@ -1,206 +1,123 @@
-# The Happier Farm! / المزرعة الأسعد!
+# Happier Farm - Deployment on OVHcloud VPS
 
-A browser-based isometric farming game with server-authoritative progression, barn economy, animals, factories, and real-time farm updates. Built for playtesting and private deployment on **.NET 8** + **SQL Server**, with an **English / Arabic** player interface.
-
-> **Not a clone** — original crops, branding, and audio. Familiar social-farm *feel* without copied assets or names.
-
----
-
-## Features
-
-| Area | What players can do |
-|------|---------------------|
-| **Account** | Register / log in with email + password (JWT), unique display name |
-| **Crops** | Equip a crop, plant on soil (gold per tile), wait for growth, harvest into barn |
-| **Barn** | Sell goods, upgrade storage (Hearty Barn), capacity enforced server-side |
-| **Animals** | Buy, place, **feed from barn**, collect milk / eggs / wool on timers |
-| **Factories** | Load ingredients, run batch production (1–10×), collect when ready |
-| **Build** | Footprint-aware placement, pickup to stash, decorations, farm expansion |
-| **Live sync** | SignalR `farmStateChanged` + light polling; growth visuals from server timestamps |
-| **UX** | Phaser farm canvas + DOM HUD/shop, MP3 menu/farm music, optional beta badge |
-
-**Level gates** — catalog items unlock by player level (enforced on API and in the client shop).
-
-**Economy** — prices, growth times, and pacing live in **SQL** (`GameSettings`, `CatalogTimingOverrides`, catalog tables). See [docs/context.md](docs/context.md) §5 for the full balance tables.
-
----
-
-## Tech stack
-
-| Layer | Technology |
-|-------|------------|
-| API | ASP.NET Core 8, minimal APIs, Swagger (dev) |
-| Auth | ASP.NET Core Identity + JWT Bearer |
-| Database | SQL Server, EF Core 8 migrations |
-| Realtime | SignalR (`/hubs/game`) |
-| Client | TypeScript, Vite 8, Phaser 3 |
-| i18n | English + Arabic (`client/src/i18n/`) |
-
----
-
-## Repository layout
+## Architecture
 
 ```
-The Happier Farm!/
-├── README.md                 ← this file
-├── docs/
-│   ├── context.md            ← authoritative spec & economy reference
-│   ├── admin-catalog.md      ← SQL tables for future admin panel
-│   └── …
-├── server/
-│   ├── HappierFarm.sln
-│   ├── HappierFarm.Domain/
-│   ├── HappierFarm.Infrastructure/   ← EF migrations
-│   └── HappierFarm.WebAPI/           ← API + SignalR
-└── client/
-    ├── public/assets/        ← audio, brand, farm sprites, backgrounds
-    └── src/                  ← Phaser scenes, HUD, network, i18n
+┌─────────────────────────────────────────────────────────────────────┐
+│                    57.129.191.113 (Ubuntu 24.04)                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│   ┌─────────────────┐       ┌─────────────────┐                    │
+│   │   Port 80       │       │   Port 8080    │                    │
+│   │   (Frontend)    │       │   (API Backend) │                    │
+│   │   nginx         │       │   ASP.NET Core  │                    │
+│   │   Phaser.js     │       │   .NET 8        │                    │
+│   └────────┬────────┘       └─────────┬──────┘                    │
+│            │                            │                           │
+│            │                            │                           │
+│   ┌────────┴────────┐       ┌──────────┴──────────┐               │
+│   │   /api/*         │       │   /hubs/game        │               │
+│   │   /api/health    │       │   WebSocket (SignalR)              │
+│   └──────────────────┘       └──────────────────────┘               │
+│                                                                      │
+│   ┌───────────────────────────────────────────────────────────────┐ │
+│   │              EXISTING SERVICES (docker-compose.yml)           │ │
+│   │   - postgres:17-alpine                    port 5432          │ │
+│   │   - sqlserver:2025-latest                 port 1433          │ │
+│   │   - caddy:2-alpine                         ports 80,443       │ │
+│   └───────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│   ┌───────────────────────────────────────────────────────────────┐ │
+│   │              HAPPIER FARM SERVICES                            │ │
+│   │   - happier-farm-api      → ghcr.io/xx7ahmed7xx/*:api:latest │ │
+│   │   - happier-farm-front    → ghcr.io/xx7ahmed7xx/*:front:latest│ │
+│   └───────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│   ┌───────────────────────────────────────────────────────────────┐ │
+│   │              EXTERNAL ACCESS (Caddy reverse proxy)            │ │
+│   │   thehappierfarm.click     → happier-farm-front (port 80)    │ │
+│   │   api.thehappierfarm.click → happier-farm-api (port 8080)    │ │
+│   └───────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
 ```
-
----
 
 ## Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download)
-- [Node.js](https://nodejs.org/) 20+ (LTS recommended)
-- **SQL Server** (local instance, LocalDB, or remote) with a database you can create/migrate (default name: `HappierFarmX7`)
+- VPS: `57.129.191.113` (Ubuntu 24.04 LTS)
+- SSH access: `ssh ubuntu@57.129.191.113`
+- Existing `~/infra/docker-compose.yml` and `~/infra/Caddyfile`
 
----
-
-## Quick start (local)
-
-### 1. Database & API
-
-```powershell
-cd server\HappierFarm.WebAPI
-dotnet run
-```
-
-- HTTP: **http://localhost:5216** (see `Properties/launchSettings.json`)
-- On startup (Development), pending EF migrations are applied automatically
-- Default connection string in `appsettings.json`:
-
-  `Server=.;Database=HappierFarmX7;Trusted_Connection=True;TrustServerCertificate=True`
-
-  Change `ConnectionStrings:DefaultConnection` for your SQL host/login.
-
-### 2. Client
-
-```powershell
-cd client
-copy .env.example .env
-npm install
-npm run dev
-```
-
-- Open **http://localhost:5173**
-- Vite proxies `/api` and `/hubs` to `VITE_API_ORIGIN` (default `http://localhost:5216`)
-- If you change the Vite port, add that origin to `Cors:AllowedOrigins` in the API `appsettings`
-
-### 3. First play
-
-1. **Register** (display name + email + password) or **Log in**
-2. Open the **Crops** tab → **Equip** a crop → drag on empty soil to plant
-3. Wait for ripeness (production pacing: e.g. barley ~30 min at 100% speed)
-4. **Harvest** into barn → sell from **Barn & inventory**
-5. Unlock animals/factories by level; feed animals from barn before production timers run
-
----
-
-## Configuration (Development vs Production)
-
-| Environment | API command | Config files |
-|-------------|-------------|--------------|
-| **Development** (local) | `dotnet run` | `appsettings.json` + `appsettings.Development.json` |
-| **Production** (VPS) | `ASPNETCORE_ENVIRONMENT=Production` + published build | `appsettings.json` + `appsettings.Production.json` + **secrets via env** |
-
-**Full step-by-step guide:** [docs/environments.md](docs/environments.md) — migrations, CORS, JWT, client build, and VPS checklist.
+## Files Created
 
 | File | Purpose |
 |------|---------|
-| `appsettings.json` | Shared defaults (local SQL, game timing, dev JWT placeholder) |
-| `appsettings.Development.json` | Auto-migrate, localhost CORS, Swagger-friendly logging |
-| `appsettings.Production.json` | Production template (SQL/CORS/JWT placeholders, no auto-migrate) |
-| `appsettings.Production.example.json` | Commented example for your server |
-| `client/.env` | Dev only: `VITE_DEV_PORT`, `VITE_API_ORIGIN` |
+| `server/Dockerfile.api` | ASP.NET Core 8 container (port 8080) |
+| `server/Dockerfile.front` | nginx + Phaser.js container (port 80) |
+| `docker-compose.additions.yml` | Docker Compose additions |
+| `Caddyfile` | Reverse proxy for subdomains |
+| `scripts/init-db.sql` | Database initialization |
+| `README.md` | This documentation |
 
-**JWT** — production must use a new random `Jwt:SigningKey` (≥ 32 bytes) via environment variables; never commit real production secrets.
+## Configuration
 
-Full game/economy detail: [docs/context.md](docs/context.md).
+Fill in these values in `appsettings.json`:
 
----
+```json
+{
+  "ASPNETCORE_ENVIRONMENT": "Production",
+  "AllowedHosts": ["thehappierfarm.click", "api.thehappierfarm.click"],
+  "ConnectionStrings__DefaultConnection": "Server=57.129.191.113;...",
+  "Jwt__SigningKey": "your-key-here",
+  "GameTiming__BaseTimePercent": 100,
+  "ClientPresentation__DefaultGridSize": 4
+}
+```
 
-## Client scripts
+## Deployment Steps
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Vite dev server + asset prep |
-| `npm run build` | Production bundle → `client/dist/` |
-| `npm run brand:sync` | Regenerate logo PNG from `happier-farm-logo-source.png` |
-| `npm run farm-sprites:copy` | Sync farm sprite PNGs into `public/assets/farm/` |
+```bash
+# 1. Build Docker images
+docker build -t ghcr.io/xx7ahmed7xx/happier-farm-api:latest -f server/Dockerfile.api .
+docker build -t ghcr.io/xx7ahmed7xx/happier-farm-front:latest -f server/Dockerfile.front .
 
----
+# 2. Login to ghcr
+docker login ghcr.io
 
-## Production deployment (summary)
+# 3. Push images
+docker push ghcr.io/xx7ahmed7xx/happier-farm-api:latest
+docker push ghcr.io/xx7ahmed7xx/happier-farm-front:latest
 
-See **[docs/environments.md](docs/environments.md)** for the full workflow. Short version:
+# 4. Deploy using existing docker-compose.yml
+cd ~/infra
+docker compose up -d happier-farm-api happier-farm-front
 
-1. Set `ASPNETCORE_ENVIRONMENT=Production`
-2. Publish the WebAPI (`dotnet publish -c Release`)
-3. Run `dotnet ef database update` against production SQL
-4. Set `ConnectionStrings__DefaultConnection`, `Jwt__SigningKey`, and `Cors__AllowedOrigins__0` on the server
-5. Serve `client/dist/` and reverse-proxy `/api` + `/hubs` (HTTPS + WebSockets)
+# 5. Initialize database
+ssh ubuntu@57.129.191.113 "psql -h 57.129.191.113 -U happier_farm -d happier_farm -f ~/infra/scripts/init-db.sql"
 
-Architecture: [docs/context.md](docs/context.md) §10.
+# 6. Update Caddyfile with correct domain
+cd ~/infra
+sudo caddy reload
 
----
+# 7. Verify deployment
+curl https://thehappierfarm.click/
+curl https://api.thehappierfarm.click/health
+```
 
-## API overview
+## Container Ports
 
-| Method | Path | Notes |
-|--------|------|--------|
-| POST | `/api/auth/register` | Create account + farm grid |
-| POST | `/api/auth/login` | JWT |
-| GET | `/api/farm` | Full snapshot (catalogs, tiles, barn, config) |
-| POST | `/api/farm/plant-batch` | Mass plant |
-| POST | `/api/farm/harvest-batch` | Mass harvest |
-| POST | `/api/barn/feed-animal` | Feed placed animal from barn |
-| POST | `/api/barn/process-factory` | Start or collect factory run |
-| Hub | `/hubs/game` | `farmStateChanged` events |
+| Container | Exposed Port |
+|-----------|-------------|
+| happier-farm-api | 8080 |
+| happier-farm-front | 80 |
 
-Swagger UI is available in Development at `/swagger`.
+## API Endpoints
 
----
+- `GET /api/health` - Health check
+- `GET /api/hubs/game` - WebSocket connection (SignalR)
+- REST API at `/api/*`
 
-## Roadmap
+## Docker Images
 
-| Status | Scope |
-|--------|--------|
-| **Shipped (v1.x)** | Core loop, animals, factories, expansion, SQL economy, EN/AR, beta badge |
-| **Next (v2)** | Admin panel/API, friends / visits / gifting, multi-recipe factories |
-| **Later** | Steal/weeds, OAuth, richer social systems |
-
----
-
-## Documentation
-
-- **[docs/context.md](docs/context.md)** — single source of truth (architecture, economy tables, ports, decisions)
-- **[docs/admin-catalog.md](docs/admin-catalog.md)** — editable SQL catalog for future admin tools
-
----
-
-## Authors
-
-| | |
-|---|---|
-| **X7 Solutions** | Product studio |
-| **Ahmed Mansour** | Design & development |
-| **Cursor** | AI-assisted development (implementation support via the [Cursor](https://cursor.com) editor) |
-
----
-
-## License
-
-Proprietary — © X7 Solutions & Ahmed Mansour. All rights reserved unless otherwise agreed in writing.
-
-Third-party assets (e.g. background music) are credited in `client/public/assets/audio/LICENSE.txt`.
+- `ghcr.io/xx7ahmed7xx/happier-farm-api:latest` - ASP.NET Core 8
+- `ghcr.io/xx7ahmed7xx/happier-farm-front:latest` - nginx + Phaser.js
